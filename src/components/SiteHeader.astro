@@ -14,7 +14,7 @@ const d = await ladeDaten();
     <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
       <p class="menue-titel meta">Alle Bereiche</p>
       {d.site.navigation.map((n) => (
-        <a href={link(n.pfad)} class={n.pfad === aktiv ? "on" : undefined} aria-current={n.pfad === aktiv ? (Astro.url.pathname.endsWith(n.pfad) ? "page" : "true") : undefined}>{n.titel}</a>
+        <a href={link(n.pfad)} class:list={{ on: n.pfad === aktiv, "im-balken": ["publikationen/", "formen/", "themen/"].includes(n.pfad) }} aria-current={n.pfad === aktiv ? (Astro.url.pathname.endsWith(n.pfad) ? "page" : "true") : undefined}>{n.titel}</a>
       ))}
       <a class="nur-menue" href={link("podcast/")}>Gespräch</a>
       <a class="nur-menue" href={link("autoren/")}>Autoren</a>
@@ -46,7 +46,7 @@ const d = await ladeDaten();
     nav?.classList.toggle("offen", offen);
     knoepfe.forEach((k) => k.setAttribute("aria-expanded", String(offen)));
     document.body.classList.toggle("menue-offen", offen);
-    if (offen) nav?.querySelector<HTMLElement>("a")?.focus();
+    if (offen) [...(nav?.querySelectorAll<HTMLElement>("a") ?? [])].find((x) => x.offsetParent)?.focus();
   };
   knoepfe.forEach((k) => k.addEventListener("click", () => setze(!nav?.classList.contains("offen"))));
   // Tippen außerhalb des Menüs schließt es

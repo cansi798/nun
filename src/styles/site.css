@@ -37,7 +37,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 [data-theme="dark"] .nur-dunkel { display: block !important; }
 
 /* Textstile auf dem Telefon kleiner, ab Desktop gelten die Werte aus tokens.json */
-.t-hero { font-size: 40px; line-height: 46px; letter-spacing: .01em; }
+.t-hero { font-size: 40px; line-height: 46px; letter-spacing: .01em; hyphens: manual; }
 .t-h1 { font-size: 34px; line-height: 40px; }
 .t-h2 { font-size: 27px; line-height: 34px; }
 .t-h3 { font-size: 22px; line-height: 29px; }
@@ -120,12 +120,19 @@ body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
 /* Der aktive Bereich trägt den goldenen Punkt, wie der Punkt über dem U */
 .mobil-nav .an::before, .mobil-nav [aria-expanded="true"]::before { content: ""; position: absolute; top: 6px; width: 5px; height: 5px; border-radius: var(--radius-punkt); background: var(--gold); }
 .mobil-nav :focus-visible { outline-offset: -4px; }
+/* Bei offenem Menü ist nur Menü aktiv */
+.mobil-nav:has([aria-expanded="true"]) .an { color: var(--ink-muted); }
+.mobil-nav:has([aria-expanded="true"]) .an::before { display: none; }
+/* Was schon in der Leiste steht, wiederholt das Menü nicht */
+.hauptnav .im-balken { display: none; }
 .fuss-in { padding-bottom: var(--space-4); }
 
 /* Menü öffnet sich auf dem Telefon als Fläche über der unteren Navigation */
 .hauptnav { display: none; position: fixed; left: 0; right: 0; bottom: calc(64px + env(safe-area-inset-bottom)); z-index: 24; flex-direction: column; max-height: calc(100dvh - 64px - 64px); overflow-y: auto; background: var(--surface-raised); border-top: 1px solid var(--linie); padding: var(--space-3) var(--space-3) var(--space-2); }
 .menue-titel { margin-bottom: var(--space-1); }
-body.menue-offen::after { content: ""; position: fixed; inset: 0 0 calc(64px + env(safe-area-inset-bottom)); z-index: 19; background: var(--nachtblau); opacity: .35; }
+body.menue-offen::after { content: ""; position: fixed; inset: 0 0 calc(64px + env(safe-area-inset-bottom)); z-index: 21; background: var(--nachtblau); opacity: .35; }
+/* Das Menü liegt im Header, deshalb hebt der Header sich über die Abdunklung */
+body.menue-offen .kopf { z-index: 22; }
 .hauptnav.offen { display: flex; }
 .hauptnav a { position: relative; display: flex; align-items: center; min-height: 52px; font: 500 15px/20px var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--linie); }
 .hauptnav a:hover { color: var(--gold-text); }
@@ -404,6 +411,9 @@ body.menue-offen { overflow: hidden; }
   .fuss-unten { display: flex; flex-wrap: wrap; justify-content: space-between; }
   .feld-paar { grid-template-columns: 1fr 1fr; }
   .tabelle-dl > div { grid-template-columns: 180px 1fr; gap: var(--space-4); }
+  .mobil-nav { grid-template-columns: repeat(5, 112px); justify-content: center; }
+  .mobil-nav a, .mobil-nav button { font-size: 12px; }
+  .hauptnav { left: 50%; right: auto; width: min(560px, 100%); transform: translateX(-50%); border: 1px solid var(--linie); border-bottom: 0; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
   .zeichen { grid-template-columns: 120px 1fr; }
   .zeichen img { width: 120px; }
   .filter-zeile { grid-template-columns: 72px 1fr; align-items: start; }
@@ -431,7 +441,8 @@ body.menue-offen { overflow: hidden; }
   .logo img { height: var(--logo-header); }
   .mobil-nav, .nur-menue, .menue-titel { display: none !important; }
   body { padding-bottom: 0; }
-  .hauptnav { display: flex; position: static; flex-direction: row; align-items: center; gap: var(--space-5); padding: 0; background: none; border: 0; max-height: none; overflow: visible; z-index: auto; }
+  .hauptnav .im-balken { display: inline-flex; }
+  .hauptnav { transform: none; width: auto; border-radius: 0; display: flex; position: static; flex-direction: row; align-items: center; gap: var(--space-5); padding: 0; background: none; border: 0; max-height: none; overflow: visible; z-index: auto; }
   body.menue-offen::after { display: none; }
   .hauptnav a { min-height: 0; padding: var(--space-2) 0; border: 0; font-size: 14px; }
   .hauptnav a.on::before { display: none; }

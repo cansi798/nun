@@ -50,14 +50,14 @@
       "slug": "essay",
       "name": "Essay",
       "kennzeichnung": "ESSAY",
-      "kurz": "Denken in langer Form",
+      "kurz": "Lange Form",
       "beschreibung": "Das Denken in langer Form."
     },
     {
       "slug": "reportage",
       "name": "Reportage",
       "kennzeichnung": "REPORTAGE",
-      "kurz": "Journalismus vor Ort",
+      "kurz": "Vor Ort",
       "beschreibung": "Der Journalismus vor Ort."
     },
     {
