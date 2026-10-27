@@ -1,0 +1,47 @@
+{
+  "format": "kurzbeitrag",
+  "reihe": "Ilm Kompakt · Islamisches Wissen in 30 Minuten",
+  "autoren": [
+    "can-bilger"
+  ],
+  "ausgabe": "",
+  "seiten": [],
+  "doi": "",
+  "lesezeit": 30,
+  "abstract_en": "",
+  "version": 1,
+  "versionen": [],
+  "literatur": [],
+  "slug": "ki-und-die-zeichen-der-stunde",
+  "rubrik": "aqiidah",
+  "titel": "KI und die Zeichen der Stunde",
+  "untertitel": "Ist die KI ein großes Zeichen, und was kommt als Nächstes?",
+  "datum": "2026-10-25",
+  "umfang_seiten": 39,
+  "abstract_de": "Der Band erklärt, was die Stunde (as-Saa'ah) ist und was ihre Zeichen sind. Er stellt die zehn großen Zeichen vor, die der Prophet (sallal-laahu 'alaihi wa sallam) genannt hat, und begründet, warum die künstliche Intelligenz kein großes Zeichen ist. Zugleich zeigt er, wie KI mit den kleinen Zeichen zusammenhängen kann und was wir über das nächste große Zeichen wissen und was nicht.",
+  "schlagworte": [
+    "Aschraat as-Saa'ah",
+    "Aachirah",
+    "Künstliche Intelligenz",
+    "'Aqiidah",
+    "Iimaan"
+  ],
+  "pdf": "pdf/ki-und-die-zeichen-der-stunde.pdf",
+  "inhalt": [
+    {
+      "typ": "h2",
+      "text": "Aus dem Inhalt"
+    },
+    {
+      "typ": "nummern",
+      "punkte": [
+        "Die Stunde und ihre Zeichen",
+        "Die zehn großen Zeichen",
+        "Ist KI ein großes Zeichen?",
+        "KI und die kleinen Zeichen",
+        "Kann man das nächste Zeichen erahnen?",
+        "Was heißt das für mich?"
+      ]
+    }
+  ]
+}

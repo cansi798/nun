@@ -1,0 +1,47 @@
+{
+  "format": "kurzbeitrag",
+  "reihe": "Ilm Kompakt · Islamisches Wissen in 30 Minuten",
+  "autoren": [
+    "can-bilger"
+  ],
+  "ausgabe": "",
+  "seiten": [],
+  "doi": "",
+  "lesezeit": 30,
+  "abstract_en": "",
+  "version": 1,
+  "versionen": [],
+  "literatur": [],
+  "slug": "takfiir-statt-tauhiid",
+  "rubrik": "aqiidah",
+  "titel": "Takfiir statt Tauhiid?",
+  "untertitel": "Die Wahhaabiyyah, ihre Lehre und der Bruch der Ummah",
+  "datum": "2026-10-25",
+  "umfang_seiten": 40,
+  "abstract_de": "Der Band fragt, was Muhammad ibn 'Abdil-Wahhaab lehrte und warum die Gelehrten der Ahlus-Sunnah seine Lehre deutlich abgelehnt haben. Er schildert die Entstehung der Bewegung, zeigt, wo ihre 'Aqiidah von der Lehre der Ahlus-Sunnah abweicht, und erklärt, warum der Takfiir ein gefährliches Werkzeug ist und welche Schranken es gibt. Zum Schluss geht es darum, wie man heute mit Wissen und Adab die Einheit der Ummah schützt.",
+  "schlagworte": [
+    "Wahhaabiyyah",
+    "Takfiir",
+    "Tauhiid",
+    "Ahlus-Sunnah",
+    "Einheit der Ummah"
+  ],
+  "pdf": "pdf/takfiir-statt-tauhiid.pdf",
+  "inhalt": [
+    {
+      "typ": "h2",
+      "text": "Aus dem Inhalt"
+    },
+    {
+      "typ": "nummern",
+      "punkte": [
+        "Ein Mann aus Nadschd",
+        "Der Kern des Problems ist die 'Aqiidah",
+        "Takfiir, ein scharfes Schwert",
+        "Wenn Worte zu Waffen werden",
+        "Die Stimmen der Gelehrten",
+        "Die Einheit der Ummah schützen"
+      ]
+    }
+  ]
+}
