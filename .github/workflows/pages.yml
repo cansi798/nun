@@ -33,6 +33,9 @@ jobs:
         env:
           NUN_BASE: /nun/
         run: npm test
+      # Solange Pages zusätzlich aus dem Zweig baut, bleibt auch die alte Adresse /nun/site/ erreichbar
+      - name: Alte Adresse /site/ mitnehmen
+        run: cp -r site dist/site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
