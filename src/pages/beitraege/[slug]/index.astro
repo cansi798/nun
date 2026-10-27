@@ -1,0 +1,62 @@
+---
+import Basis from "../../../layouts/Basis.astro";
+import ArtikelKopf from "../../../components/ArtikelKopf.astro";
+import ScholarMeta from "../../../components/ScholarMeta.astro";
+import Inhalt from "../../../components/Inhalt.astro";
+import Zitiervorschlag from "../../../components/Zitiervorschlag.astro";
+import PublicationCard from "../../../components/PublicationCard.astro";
+import { ladeDaten } from "../../../lib/daten";
+import { datumLang, link } from "../../../lib/hilfen";
+import type { Beitrag } from "../../../lib/typen";
+
+export async function getStaticPaths() {
+  const d = await ladeDaten();
+  return d.beitraege.map((b) => ({ params: { slug: b.slug }, props: { b } }));
+}
+const { b } = Astro.props as { b: Beitrag };
+const d = await ladeDaten();
+// Weitere Beiträge, zuerst aus derselben Rubrik
+const weitere = d.beitraege.filter((x) => x.slug !== b.slug)
+  .sort((x, y) => Number(y.rubrik === b.rubrik) - Number(x.rubrik === b.rubrik)).slice(0, 3);
+---
+<Basis titel={b.titel} beschreibung={b.abstract_de} aktiv="publikationen/">
+  <ScholarMeta slot="kopf" b={b} />
+  <article class="seite beitrag">
+    <nav class="pfad meta" aria-label="Pfad"><a href={link("publikationen/")}>Publikationen</a><span aria-hidden="true">/</span><span>{d.rubriken.get(b.rubrik)!.name}</span></nav>
+    <ArtikelKopf b={b} />
+    <section class="abstract" aria-labelledby="abstract-titel">
+      <h2 class="meta gold" id="abstract-titel">Abstract</h2>
+      <p class="t-lead">{b.abstract_de}</p>
+      {b.abstract_en && <><h2 class="meta gold">Abstract (English)</h2><p lang="en">{b.abstract_en}</p></>}
+      <h2 class="meta gold">Schlagworte</h2>
+      <ul class="schlagworte">{b.schlagworte.map((s) => <li>{s}</li>)}</ul>
+    </section>
+    <Inhalt bloecke={b.inhalt} />
+    {b.literatur?.length ? (
+      <section class="literatur"><h2 class="t-h2" id="literatur">Literatur</h2><ul>{b.literatur.map((x) => <li>{x}</li>)}</ul></section>
+    ) : null}
+    {b.versionen?.length ? (
+      <section class="versionen"><h2 class="meta gold">Versionen</h2>
+        <ul class="punktliste">{b.versionen.map((v) => <li>Version {v.version} vom {datumLang(v.datum)}. {v.hinweis}</li>)}</ul></section>
+    ) : null}
+    {b.pdf && (
+      <section class="pdf-ansicht" id="lesen" aria-labelledby="pdf-titel">
+        <h2 class="t-h2" id="pdf-titel">Den Beitrag lesen</h2>
+        <object data={`${link(b.pdf)}#view=FitH`} type="application/pdf" aria-label={`PDF ${b.titel}`}>
+          <div class="pdf-ersatz">
+            <p>Auf diesem Gerät öffnet sich das PDF in einem eigenen Fenster.</p>
+            <a class="knopf primaer" href={link(b.pdf)}>PDF öffnen</a>
+          </div>
+        </object>
+        <p class="unterzeile">Frei verwendbar unter {d.site.lizenz.name}. <a href={link(b.pdf)} download>PDF herunterladen</a></p>
+      </section>
+    )}
+    <Zitiervorschlag b={b} />
+  </article>
+  {weitere.length > 0 && (
+    <section class="abschnitt seite" aria-labelledby="weitere">
+      <div class="abschnitt-kopf"><h2 class="t-h2" id="weitere">Weitere Beiträge</h2><hr class="goldlinie"></div>
+      <div class="raster">{weitere.map((x) => <PublicationCard b={x} />)}</div>
+    </section>
+  )}
+</Basis>

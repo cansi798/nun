@@ -1,4 +1,6 @@
 dist/
-# site/ ist die veröffentlichte Fassung für GitHub Pages (Deploy from branch) und wird mit eingecheckt
+node_modules/
+.astro/
 __pycache__/
 *.pyc
+# site/ ist die veröffentlichte Fassung für GitHub Pages (Deploy from branch) und wird eingecheckt

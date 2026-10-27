@@ -1,0 +1,30 @@
+---
+import type { Beitrag } from "../lib/typen";
+import { ladeDaten } from "../lib/daten";
+import { apa, beitragPfad, link } from "../lib/hilfen";
+const { b } = Astro.props as { b: Beitrag };
+const d = await ladeDaten();
+---
+<section class="zitiervorschlag" id="zitieren" tabindex="-1" aria-labelledby="zitier-titel">
+  <div class="zitier-kopf">
+    <h2 class="meta gold" id="zitier-titel">So zitieren Sie diesen Beitrag</h2>
+    <button class="knopf sekundaer klein" type="button" data-kopieren="#apa">Kopieren</button>
+  </div>
+  <p class="zitat-text" id="apa" set:html={apa(d, b)} />
+  <div class="link-zeile">
+    <a class="textlink" href={link(beitragPfad(b) + "zitat.bib")} download>BibTeX</a>
+    <a class="textlink" href={link(beitragPfad(b) + "zitat.ris")} download>RIS</a>
+  </div>
+  <p class="sr" aria-live="polite" data-kopiert></p>
+</section>
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-kopieren]").forEach((k) => k.addEventListener("click", async () => {
+    const ziel = document.querySelector<HTMLElement>(k.dataset.kopieren!);
+    if (!ziel) return;
+    try { await navigator.clipboard.writeText(ziel.innerText); } catch {}
+    k.textContent = "Kopiert";
+    const ansage = document.querySelector("[data-kopiert]");
+    if (ansage) ansage.textContent = "Zitiervorschlag kopiert";
+    setTimeout(() => { k.textContent = "Kopieren"; if (ansage) ansage.textContent = ""; }, 2000);
+  }));
+</script>

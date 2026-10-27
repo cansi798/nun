@@ -1,0 +1,48 @@
+---
+import "../styles/fonts.css";
+import "../styles/tokens.css";
+import "../styles/site.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { ladeDaten } from "../lib/daten";
+import { absolut, link } from "../lib/hilfen";
+
+interface Props { titel?: string; beschreibung?: string; aktiv?: string; noindex?: boolean }
+const { titel = "", beschreibung, aktiv = "", noindex = false } = Astro.props;
+const d = await ladeDaten();
+const voll = titel ? `${titel} · ${d.site.name}` : `${d.site.name} · ${d.site.leitsatz}`;
+const text = beschreibung || d.site.beschreibung;
+const kanonisch = absolut(Astro.url.pathname.replace(import.meta.env.BASE_URL, ""));
+---
+<!doctype html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{voll}</title>
+<meta name="description" content={text}>
+{noindex && <meta name="robots" content="noindex">}
+<link rel="canonical" href={kanonisch}>
+<link rel="icon" href={link("favicon.ico")} sizes="any">
+<link rel="icon" href={link("favicon.svg")} type="image/svg+xml">
+<link rel="apple-touch-icon" href={link("apple-touch-icon.png")}>
+<link rel="manifest" href={link("site.webmanifest")}>
+<meta name="theme-color" content="#F5EFE2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1F2E4D" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content={voll}>
+<meta property="og:description" content={text}>
+<meta property="og:image" content={absolut("icon-512.png")}>
+<meta property="og:locale" content="de_DE">
+<script is:inline>try{var t=localStorage.getItem("nun-thema")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(_){}</script>
+<slot name="kopf" />
+</head>
+<body>
+<a class="sprung" href="#inhalt">Zum Inhalt springen</a>
+<SiteHeader aktiv={aktiv} />
+<main id="inhalt">
+<slot />
+</main>
+<SiteFooter />
+</body>
+</html>

@@ -1,0 +1,24 @@
+---
+import Basis from "../../layouts/Basis.astro";
+import Seitenkopf from "../../components/Seitenkopf.astro";
+import { ladeDaten } from "../../lib/daten";
+import { anzahl, link } from "../../lib/hilfen";
+const d = await ladeDaten();
+---
+<Basis titel="Themen" aktiv="themen/">
+  <div class="seite">
+    <Seitenkopf titel="Themen" einleitung="Die Rubriken folgen den Fächern des Studienplans. Jeder Beitrag hat genau eine Rubrik und bis zu fünf Schlagworte." />
+    <div class="themen-gitter">
+      {d.site.rubriken.map((r) => {
+        const n = d.beitraege.filter((b) => b.rubrik === r.slug).length;
+        return (
+          <a class="thema-zelle" href={link(`publikationen/?rubrik=${r.slug}`)}>
+            <span class="thema-name">{r.name}</span>
+            <span class="thema-faecher">{r.faecher}</span>
+            <span class={n ? "meta gold" : "meta"}>{n ? anzahl(n, "Beitrag", "Beiträge") : "Noch keine Beiträge"}</span>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</Basis>

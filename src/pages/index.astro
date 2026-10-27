@@ -1,0 +1,113 @@
+---
+// Startseite nach dem Mockup "Startseite".
+import Basis from "../layouts/Basis.astro";
+import PublicationCard from "../components/PublicationCard.astro";
+import { aktuelleAusgabe, beitraegeIn, ladeDaten } from "../lib/daten";
+import { anzahl, link } from "../lib/hilfen";
+const d = await ladeDaten();
+const neueste = d.beitraege.slice(0, 3);
+const heft = aktuelleAusgabe(d);
+const heftBeitraege = heft ? beitraegeIn(d, heft.id) : [];
+const reihe = d.beitraege.find((b) => b.reihe)?.reihe;
+const [reiheName, reiheZusatz] = reihe?.split(" · ") ?? [];
+const zaehle = (r: string) => d.beitraege.filter((b) => b.rubrik === r).length;
+const saeulen = [
+  ["Frei zugänglich", `Alle Beiträge sind ohne Anmeldung lesbar und dürfen unter ${d.site.lizenz.name} geteilt werden.`],
+  ["Zitierfähig", "Jeder Beitrag erhält eine DOI und einen Zitiervorschlag nach APA 7 und ist für Google Scholar ausgezeichnet."],
+  ["Aus dem Studium", "Die Autorinnen und Autoren haben Islam-Wissenschaft am Islamologischen Institut studiert."],
+];
+---
+<Basis>
+  <section class="hero">
+    <div class="hero-text">
+      <div class="meta gold kennzeile"><span>Open Access</span><span class="punkt" aria-hidden="true"></span><span>Islamwissenschaften im deutschsprachigen Raum</span></div>
+      <h1 class="t-hero">Islamisches Wissen, wissenschaftlich aufbereitet und frei für alle</h1>
+      <hr class="goldlinie">
+      <p class="t-lead">Fachartikel, Abschlussarbeiten und Übersetzungen von Absolventinnen und Absolventen des Islamologischen Instituts. Ohne Anmeldung, ohne Bezahlschranke, mit DOI und Zitiervorschlag.</p>
+      <div class="knopf-zeile">
+        <a class="knopf primaer" href={link("publikationen/")}>Publikationen entdecken</a>
+        <a class="knopf sekundaer" href={link("ausgaben/")}>Aktuelles Heft</a>
+      </div>
+      <p class="t-slogan leitsatz">{d.site.leitsatz}</p>
+    </div>
+    <div class="hero-flaeche" aria-hidden="true">
+      <img src={link("logo/emblem-hell.svg")} alt="" width="440" height="440" fetchpriority="high">
+    </div>
+  </section>
+
+  <section class="abschnitt seite" aria-labelledby="neu">
+    <div class="abschnitt-kopf zeile">
+      <div><h2 class="t-h1" id="neu">Neue Beiträge</h2><hr class="goldlinie"></div>
+      <a class="textlink" href={link("publikationen/")}>Alle Publikationen</a>
+    </div>
+    <div class="raster">{neueste.map((b) => <PublicationCard b={b} />)}</div>
+  </section>
+
+  {heft && (
+    <section class="heft-band" id="ausgaben" aria-labelledby="heft">
+      <div class="heft-band-in">
+        <div class="heft-titel gross" aria-hidden="true">
+          <img src={link("logo/emblem-hell.svg")} alt="" width="150" height="150" loading="lazy">
+          <b>NUN</b><span>Jahrgang {heft.jahrgang} · Heft {heft.heft}</span>
+        </div>
+        <div class="heft-text">
+          <div class="meta">Aktuelles Heft · {heft.jahreszeit} {heft.jahr}</div>
+          <h2 class="t-h1" id="heft">{heft.titel}</h2>
+          <p class="heft-info">{heftBeitraege.length ? anzahl(heftBeitraege.length, "Beitrag", "Beiträge") : "In Vorbereitung"} · ISSN {d.site.issn}</p>
+          <ul class="punktliste">
+            {heftBeitraege.length
+              ? heftBeitraege.slice(0, 3).map((b) => <li>{b.titel}</li>)
+              : <li>Die Beiträge werden zurzeit gelesen und erscheinen vorab online.</li>}
+          </ul>
+          <div class="knopf-zeile">
+            <a class="knopf hell" href={link(`ausgaben/${heft.id}/`)}>Inhaltsverzeichnis</a>
+            {heft.pdf && <a class="knopf sekundaer-invers" href={link(heft.pdf)}>Gesamt-PDF</a>}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="abschnitt seite" id="themen" aria-labelledby="themen-titel">
+    <h2 class="t-h1" id="themen-titel">Themen</h2>
+    <hr class="goldlinie">
+    <p class="abschnitt-text">Die Rubriken folgen den Fächern des Studiums der Islam-Wissenschaft.</p>
+    <div class="themen-gitter">
+      {d.site.rubriken.map((r) => (
+        <a class="thema-zelle" href={link(`publikationen/?rubrik=${r.slug}`)}>
+          <span class="thema-name">{r.name}</span>
+          <span class="thema-faecher">{r.faecher}</span>
+          {zaehle(r.slug) > 0 && <span class="meta gold">{anzahl(zaehle(r.slug), "Beitrag", "Beiträge")}</span>}
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="abschnitt seite panels">
+    {reihe ? (
+      <div class="panel gold-flaeche">
+        <div class="meta gold">Reihe</div>
+        <h2 class="t-h2">{reiheName}</h2>
+        <p>{reiheZusatz}. Kompakte Bände zu Fragen, die Muslime im deutschsprachigen Raum heute bewegen, mit Quraan-Bedeutungen nach Amir Zaidan und belegten Quellen.</p>
+        <a class="textlink" href={link("publikationen/?format=kurzbeitrag")}>Alle Bände der Reihe</a>
+      </div>
+    ) : (
+      <div class="panel gold-flaeche">
+        <div class="meta gold">Abschlussarbeiten</div>
+        <h2 class="t-h2">Bachelorarbeiten aus dem Studium der Islam-Wissenschaft</h2>
+        <p>Überarbeitete Abschlussarbeiten, geordnet nach Jahrgang.</p>
+        <a class="textlink" href={link("publikationen/?format=abschlussarbeit")}>Zu den Abschlussarbeiten</a>
+      </div>
+    )}
+    <div class="panel" id="podcast">
+      <div class="meta gold">Podcast</div>
+      <h2 class="t-h2">Die Autoren im Gespräch über ihre Beiträge</h2>
+      <p>Die ersten Folgen sind in Vorbereitung.</p>
+      <a class="knopf primaer mit-icon" href={link("podcast/")}><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z"/></svg>Zum Podcast</a>
+    </div>
+  </section>
+
+  <section class="abschnitt seite saeulen" aria-label="Was NUN ausmacht">
+    {saeulen.map(([t, x]) => <div class="saeule"><span class="saeule-punkt" aria-hidden="true"></span><h2 class="t-h3">{t}</h2><p>{x}</p></div>)}
+  </section>
+</Basis>

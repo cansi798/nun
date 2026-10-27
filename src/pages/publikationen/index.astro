@@ -1,0 +1,18 @@
+---
+import Basis from "../../layouts/Basis.astro";
+import Seitenkopf from "../../components/Seitenkopf.astro";
+import ThemenFilter from "../../components/ThemenFilter.astro";
+import PublicationCard from "../../components/PublicationCard.astro";
+import { ladeDaten } from "../../lib/daten";
+import { anzahl } from "../../lib/hilfen";
+const d = await ladeDaten();
+---
+<Basis titel="Publikationen" aktiv="publikationen/">
+  <div class="seite">
+    <Seitenkopf titel="Publikationen" einleitung={`Alle Beiträge auf NUN, frei zugänglich unter ${d.site.lizenz.name}. Wählen Sie Rubriken und Formate oder suchen Sie nach Titel, Autor und Schlagwort.`} />
+    <ThemenFilter />
+    <p class="meta treffer" aria-live="polite" data-treffer>{anzahl(d.beitraege.length, "Beitrag", "Beiträge")}</p>
+    <div class="raster" data-liste>{d.beitraege.map((b) => <PublicationCard b={b} ueberschrift="h2" />)}</div>
+    <p class="leer" data-leer hidden>Zu dieser Auswahl gibt es noch keine Beiträge. <a href="?">Filter zurücksetzen</a></p>
+  </div>
+</Basis>

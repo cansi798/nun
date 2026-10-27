@@ -1,0 +1,22 @@
+{
+  "name": "nun",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "NUN · Wissenschaftliche Open-Access-Plattform für islamische Publikationen",
+  "scripts": {
+    "tokens": "node scripts/tokens.mjs",
+    "dev": "npm run tokens && astro dev",
+    "build": "npm run tokens && astro build",
+    "build:pages": "npm run tokens && NUN_BASE=/nun/site/ NUN_SITE=https://cansi798.github.io NUN_OUT=site astro build",
+    "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "astro": "5.1.1",
+    "pocketbase": "0.25.0"
+  }
+}

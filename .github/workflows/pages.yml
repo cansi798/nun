@@ -1,4 +1,4 @@
-name: Website auf GitHub Pages
+name: Website prüfen und bauen
 
 on:
   push:
@@ -19,38 +19,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: "3.12"
-
-      - id: pages
-        uses: actions/configure-pages@v5
-        continue-on-error: true
-
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Bauen
+        run: npm run build
       - name: Tests
-        run: python3 -m unittest discover -s tests -v
-
-      - name: Website bauen
-        shell: bash
-        env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
-          ORIGIN: ${{ steps.pages.outputs.origin }}
-        run: |
-          base="${BASE_PATH%/}/"
-          case "$base" in
-            /*) ;;
-            *) base="/$base" ;;
-          esac
-          echo "Basis $base, Adresse $ORIGIN"
-          python3 build.py --base "$base" --url "$ORIGIN"
-
+        run: npm test
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   # Läuft nur von Hand, solange Pages auf "Deploy from branch" steht (dann wird site/ ausgeliefert).
-  # Nach Umstellung auf Settings, Pages, Source "GitHub Actions" die if-Zeile entfernen.
+  # Nach Umstellung auf Settings, Pages, Source "GitHub Actions" die if-Zeile entfernen
+  # und im Schritt Bauen NUN_BASE und NUN_SITE setzen.
   deploy:
     if: github.event_name == 'workflow_dispatch'
     needs: build

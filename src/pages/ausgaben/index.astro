@@ -1,0 +1,31 @@
+---
+import Basis from "../../layouts/Basis.astro";
+import Seitenkopf from "../../components/Seitenkopf.astro";
+import AusgabeKarte from "../../components/AusgabeKarte.astro";
+import PublicationCard from "../../components/PublicationCard.astro";
+import { ladeDaten } from "../../lib/daten";
+const d = await ladeDaten();
+const hefte = [...d.ausgaben.values()].sort((a, b) => b.jahrgang - a.jahrgang || b.heft - a.heft);
+const arbeiten = d.beitraege.filter((b) => b.format === "abschlussarbeit");
+const jahre = [...new Set(arbeiten.map((b) => b.abschlussjahr).filter(Boolean))].sort().reverse();
+const laufend = d.beitraege.filter((b) => !b.ausgabe && b.format !== "abschlussarbeit");
+---
+<Basis titel="Ausgaben" aktiv="ausgaben/">
+  <div class="seite">
+    <Seitenkopf titel="Ausgaben" einleitung="Fachartikel und Kurzbeiträge erscheinen in Heften, zweimal im Jahr im Frühjahr und im Herbst. Abschlussarbeiten erscheinen in einer eigenen Reihe nach Abschlussjahr, die übrigen Formate laufend." />
+    <div class="ausgaben-liste">{hefte.map((a) => <AusgabeKarte a={a} />)}</div>
+    {jahre.map((j) => (
+      <section class="abschnitt-klein">
+        <h2 class="t-h2">Abschlussarbeiten {j}</h2>
+        <div class="raster">{arbeiten.filter((b) => b.abschlussjahr === j).map((b) => <PublicationCard b={b} />)}</div>
+      </section>
+    ))}
+    {laufend.length > 0 && (
+      <section class="abschnitt-klein" aria-labelledby="laufend">
+        <h2 class="t-h2" id="laufend">Laufend erschienen</h2>
+        <p class="abschnitt-text">Beiträge außerhalb der Hefte, etwa aus der Reihe Ilm Kompakt.</p>
+        <div class="raster">{laufend.map((b) => <PublicationCard b={b} />)}</div>
+      </section>
+    )}
+  </div>
+</Basis>

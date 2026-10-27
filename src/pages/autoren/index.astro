@@ -1,0 +1,22 @@
+---
+import Basis from "../../layouts/Basis.astro";
+import Seitenkopf from "../../components/Seitenkopf.astro";
+import { beitraegeVon, ladeDaten } from "../../lib/daten";
+import { anzahl, autorName, link } from "../../lib/hilfen";
+const d = await ladeDaten();
+const alle = [...d.autoren.values()].sort((a, b) => a.nachname.localeCompare(b.nachname, "de"));
+---
+<Basis titel="Autorinnen und Autoren">
+  <div class="seite">
+    <Seitenkopf titel="Autorinnen und Autoren" einleitung="Alle Personen, die auf NUN veröffentlichen, sind Absolventinnen und Absolventen des Islamologischen Instituts." />
+    <ul class="raster liste-ohne">
+      {alle.map((a) => (
+        <li class="karte">
+          <h2 class="t-h3"><a class="karte-link" href={link(`autoren/${a.slug}/`)}>{autorName(a)}</a></h2>
+          <p class="unterzeile">{a.abschluss}{a.abschlussjahr ? ` · Abschlussjahr ${a.abschlussjahr}` : ""}</p>
+          <p class="meta gold">{anzahl(beitraegeVon(d, a.slug).length, "Beitrag", "Beiträge")} auf NUN</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Basis>

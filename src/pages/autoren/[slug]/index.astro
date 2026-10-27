@@ -1,0 +1,30 @@
+---
+import Basis from "../../../layouts/Basis.astro";
+import Seitenkopf from "../../../components/Seitenkopf.astro";
+import PublicationCard from "../../../components/PublicationCard.astro";
+import { beitraegeVon, ladeDaten } from "../../../lib/daten";
+import { autorName } from "../../../lib/hilfen";
+import type { Autor } from "../../../lib/typen";
+export async function getStaticPaths() {
+  return [...(await ladeDaten()).autoren.values()].map((a) => ({ params: { slug: a.slug }, props: { a } }));
+}
+const { a } = Astro.props as { a: Autor };
+const d = await ladeDaten();
+const ld = JSON.stringify({ "@context": "https://schema.org", "@type": "Person", name: autorName(a),
+  ...(a.orcid ? { sameAs: `https://orcid.org/${a.orcid}` } : {}) }).replaceAll("</", "<\\/");
+---
+<Basis titel={autorName(a)}>
+  <script slot="kopf" type="application/ld+json" is:inline set:html={ld} />
+  <div class="seite">
+    <Seitenkopf titel={autorName(a)} rubrik="Autorin oder Autor">
+      <p class="unterzeile">{a.abschluss}, {d.site.institut}{a.abschlussjahr ? ` · Abschlussjahr ${a.abschlussjahr}` : ""}</p>
+      <p>{a.bio}</p>
+      {a.bachelorarbeit && <p class="unterzeile">Thema der Bachelorarbeit · {a.bachelorarbeit}</p>}
+      {a.orcid && <p><a class="textlink" href={`https://orcid.org/${a.orcid}`}>ORCID {a.orcid}</a></p>}
+    </Seitenkopf>
+    <section aria-labelledby="bt">
+      <h2 class="t-h2" id="bt">Beiträge auf NUN</h2>
+      <div class="raster abstand-oben">{beitraegeVon(d, a.slug).map((b) => <PublicationCard b={b} />)}</div>
+    </section>
+  </div>
+</Basis>

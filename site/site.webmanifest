@@ -1,6 +1,7 @@
 {
   "name": "NUN",
   "short_name": "NUN",
+  "lang": "de",
   "start_url": "/nun/site/",
   "icons": [
     {

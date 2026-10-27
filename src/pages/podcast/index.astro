@@ -1,0 +1,21 @@
+---
+import Basis from "../../layouts/Basis.astro";
+import Seitenkopf from "../../components/Seitenkopf.astro";
+import PublicationCard from "../../components/PublicationCard.astro";
+import { ladeDaten } from "../../lib/daten";
+import { link } from "../../lib/hilfen";
+const d = await ladeDaten();
+const folgen = d.beitraege.filter((b) => b.format === "podcast");
+---
+<Basis titel="Podcast" aktiv="podcast/">
+  <div class="seite">
+    <Seitenkopf titel="Podcast" einleitung="Gespräche und Vorträge zu den Beiträgen auf NUN, jeweils 20 bis 60 Minuten." />
+    {folgen.length ? <div class="raster">{folgen.map((b) => <PublicationCard b={b} />)}</div> : (
+      <div class="panel schmal">
+        <h2 class="t-h3">Die ersten Folgen sind in Vorbereitung</h2>
+        <p>Hier erscheinen bald Gespräche mit den Autorinnen und Autoren über ihre Beiträge. Bis dahin finden Sie alle Texte bei den Publikationen.</p>
+        <a class="textlink" href={link("publikationen/")}>Zu den Publikationen</a>
+      </div>
+    )}
+  </div>
+</Basis>

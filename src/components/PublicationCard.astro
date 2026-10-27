@@ -1,0 +1,20 @@
+---
+// Publikationskarte (Handbuch). Die ganze Karte ist klickbar, der Titel ist der Link.
+import type { Beitrag } from "../lib/typen";
+import Kennzeile from "./Kennzeile.astro";
+import { ladeDaten } from "../lib/daten";
+import { autorName, beitragPfad, datumLang, link } from "../lib/hilfen";
+const { b, ueberschrift = "h3" } = Astro.props as { b: Beitrag; ueberschrift?: "h2" | "h3" };
+const d = await ladeDaten();
+const autoren = b.autoren.map((a) => autorName(d.autoren.get(a)!)).join(", ");
+const suche = [b.titel, b.untertitel ?? "", autoren, ...b.schlagworte, d.rubriken.get(b.rubrik)!.name].join(" ").toLowerCase();
+const H = ueberschrift;
+---
+<article class="karte" data-rubrik={b.rubrik} data-format={b.format} data-suche={suche}>
+  <Kennzeile b={b} />
+  <H class="t-h3 karte-titel"><a class="karte-link" href={link(beitragPfad(b))}>{b.titel}</a></H>
+  {b.untertitel && <p class="karte-untertitel">{b.untertitel}</p>}
+  <p class="unterzeile">{autoren} · {datumLang(b.datum)}</p>
+  <p class="karte-abstract">{b.abstract_de}</p>
+  <span class="textlink" aria-hidden="true">Artikel lesen</span>
+</article>

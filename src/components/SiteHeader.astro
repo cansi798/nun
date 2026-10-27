@@ -1,0 +1,53 @@
+---
+// Wortmarke links, Navigation rechts (Handbuch, SiteHeader). Mobil ein Menü.
+import { ladeDaten } from "../lib/daten";
+import { link } from "../lib/hilfen";
+const { aktiv = "" } = Astro.props as { aktiv?: string };
+const d = await ladeDaten();
+---
+<header class="kopf">
+  <div class="kopf-in">
+    <a class="logo" href={link()} aria-label="NUN Startseite">
+      <img class="nur-hell" src={link("logo/wortmarke.svg")} alt="NUN" width="128" height="72">
+      <img class="nur-dunkel" src={link("logo/wortmarke-hell.svg")} alt="NUN" width="128" height="72">
+    </a>
+    <button class="icon-knopf menue-knopf" type="button" aria-controls="hauptnav" aria-expanded="false">
+      <span class="sr">Menü</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="m1" d="M4 7h16"/><path class="m2" d="M4 12h16"/><path class="m3" d="M4 17h16"/></svg>
+    </button>
+    <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
+      {d.site.navigation.map((n) => (
+        <a href={link(n.pfad)} class={n.pfad === aktiv ? "on" : undefined} aria-current={n.pfad === aktiv ? "page" : undefined}>{n.titel}</a>
+      ))}
+      <button class="thema-knopf" type="button" data-thema-wechsel>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+        <span class="thema-text">Dunkles Thema</span>
+      </button>
+    </nav>
+  </div>
+</header>
+<script>
+  const doc = document.documentElement;
+  const knopfText = () => document.querySelectorAll<HTMLElement>(".thema-text").forEach((s) => {
+    s.textContent = doc.dataset.theme === "dark" ? "Helles Thema" : "Dunkles Thema";
+  });
+  knopfText();
+  document.querySelectorAll("[data-thema-wechsel]").forEach((k) => k.addEventListener("click", () => {
+    const neu = doc.dataset.theme === "dark" ? "light" : "dark";
+    doc.dataset.theme = neu;
+    try { localStorage.setItem("nun-thema", neu); } catch {}
+    knopfText();
+  }));
+  const menue = document.querySelector<HTMLButtonElement>(".menue-knopf");
+  const nav = document.getElementById("hauptnav");
+  const setze = (offen: boolean) => {
+    nav?.classList.toggle("offen", offen);
+    menue?.setAttribute("aria-expanded", String(offen));
+    document.body.classList.toggle("menue-offen", offen);
+  };
+  menue?.addEventListener("click", () => setze(!nav?.classList.contains("offen")));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && nav?.classList.contains("offen")) { setze(false); menue?.focus(); }
+  });
+  matchMedia("(min-width: 960px)").addEventListener("change", (m) => m.matches && setze(false));
+</script>
