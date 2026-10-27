@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /nun/site/intern/
+Sitemap: https://cansi798.github.io/nun/site/sitemap.xml

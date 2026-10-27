@@ -1,3 +1,4 @@
 dist/
+# site/ ist die veröffentlichte Fassung für GitHub Pages (Deploy from branch) und wird mit eingecheckt
 __pycache__/
 *.pyc
