@@ -36,7 +36,7 @@ const d = await ladeDaten();
     const neu = doc.dataset.theme === "dark" ? "light" : "dark";
     doc.dataset.theme = neu;
     try { localStorage.setItem("nun-thema", neu); } catch {}
-    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((m) => (m.content = neu === "dark" ? "#1F2E4D" : "#F5EFE2"));
+    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((m) => (m.content = neu === "dark" ? "#1A2641" : "#F5EFE2"));
     knopfText();
   }));
   const knoepfe = [...document.querySelectorAll<HTMLButtonElement>("[data-menue]")];

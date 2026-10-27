@@ -13,9 +13,15 @@
       "src": "/nun/site/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/nun/site/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "background_color": "#F5EFE2",
-  "theme_color": "#1F2E4D",
+  "theme_color": "#F5EFE2",
   "display": "standalone"
 }
