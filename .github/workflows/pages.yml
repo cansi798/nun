@@ -51,5 +51,19 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # Solange Pages zusätzlich aus dem Zweig baut, erst dessen Bau abwarten,
+      # damit diese Fassung zuletzt veröffentlicht wird und gewinnt
+      - name: Zweig-Bau abwarten
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 40); do
+            stand=$(gh api "repos/${{ github.repository }}/pages/builds/latest" --jq '.status + " " + .commit' 2>/dev/null || echo "unbekannt")
+            echo "$stand"
+            case "$stand" in
+              "built ${{ github.sha }}"|"errored ${{ github.sha }}") break ;;
+            esac
+            sleep 10
+          done
       - id: deployment
         uses: actions/deploy-pages@v4
