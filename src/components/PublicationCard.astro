@@ -4,13 +4,13 @@ import type { Beitrag } from "../lib/typen";
 import Kennzeile from "./Kennzeile.astro";
 import { ladeDaten } from "../lib/daten";
 import { autorName, beitragPfad, datumLang, link } from "../lib/hilfen";
-const { b, ueberschrift = "h3", kompakt = false } = Astro.props as { b: Beitrag; ueberschrift?: "h2" | "h3"; kompakt?: boolean };
+const { b, ueberschrift = "h3", kompakt = false, klasse } = Astro.props as { b: Beitrag; ueberschrift?: "h2" | "h3"; kompakt?: boolean; klasse?: string };
 const d = await ladeDaten();
 const autoren = b.autoren.map((a) => autorName(d.autoren.get(a)!)).join(", ");
 const suche = [b.titel, b.untertitel ?? "", autoren, ...b.schlagworte, d.rubriken.get(b.rubrik)!.name].join(" ").toLowerCase();
 const H = ueberschrift;
 ---
-<article class:list={["karte", { kompakt }]} data-rubrik={b.rubrik} data-format={b.format} data-suche={suche}>
+<article class:list={["karte", klasse, { kompakt }]} data-rubrik={b.rubrik} data-format={b.format} data-suche={suche}>
   <Kennzeile b={b} />
   <H class="t-h3 karte-titel"><a class="karte-link" href={link(beitragPfad(b))}>{b.titel}</a></H>
   {b.untertitel && !kompakt && <p class="karte-untertitel">{b.untertitel}</p>}

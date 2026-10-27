@@ -47,7 +47,7 @@ h1, h2, h3 { text-wrap: balance; overflow-wrap: break-word; hyphens: auto; }
 p { text-wrap: pretty; }
 
 /* ---------- Raster ---------- */
-.seite { max-width: var(--breite-seite); margin: 0 auto; padding: 0 var(--space-3); }
+.seite { max-width: var(--breite-seite); margin: 0 auto; padding-inline: var(--space-3); }
 .schmal { max-width: var(--breite-text); }
 .abschnitt { padding-top: var(--space-7); }
 .abschnitt-klein { padding-top: var(--space-6); }
@@ -56,6 +56,7 @@ p { text-wrap: pretty; }
 .abschnitt-kopf .goldlinie { margin: var(--space-3) 0 0; }
 .abschnitt-kopf.zeile .textlink { min-height: 0; padding-bottom: 2px; }
 .nur-breit { display: none !important; }
+.nur-tablet { display: none !important; }
 .abschnitt-text { max-width: var(--breite-text); margin-bottom: var(--space-4); }
 .abstand-oben { margin-top: var(--space-4); }
 main { padding-bottom: var(--space-7); }
@@ -336,7 +337,7 @@ body.menue-offen { overflow: hidden; }
    ========================================================= */
 @media (min-width: 640px) {
   body { font-size: 18px; line-height: 30px; }
-  .seite { padding: 0 var(--space-4); }
+  .seite { padding-inline: var(--space-4); }
   .t-hero { font-size: 52px; line-height: 58px; }
   .t-h1 { font-size: 40px; line-height: 48px; }
   .t-h2 { font-size: 30px; line-height: 38px; }
@@ -352,6 +353,7 @@ body.menue-offen { overflow: hidden; }
   .hero-flaeche img { width: 200px; }
   .nur-breit { display: inline-flex !important; }
   .nur-schmal { display: none !important; }
+  .nur-tablet { display: flex !important; }
   .thema-zelle { padding: var(--space-4) var(--space-4) var(--space-4) 0; }
   .heft-titel.gross { width: 180px; height: 240px; gap: 12px; }
   .heft-titel.gross img { width: 120px; }
@@ -386,7 +388,7 @@ body.menue-offen { overflow: hidden; }
    Desktop ab 960px
    ========================================================= */
 @media (min-width: 960px) {
-  .seite { padding: 0 var(--space-5); }
+  .seite { padding-inline: var(--space-5); }
   .abschnitt { padding-top: var(--space-8); }
   .abschnitt-kopf { margin-bottom: 40px; }
   main { padding-bottom: var(--space-8); }
@@ -417,6 +419,7 @@ body.menue-offen { overflow: hidden; }
   .leitsatz { margin-top: var(--space-2); }
 
   .raster { grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+  .nur-tablet { display: none !important; }
   .themen-gitter { grid-template-columns: repeat(3, 1fr); }
   .heft-band { margin-top: var(--space-8); }
   .heft-band-in { padding: 96px var(--space-5); gap: 64px; }
