@@ -4,7 +4,9 @@ NUN ist eine wissenschaftliche Open-Access-Plattform für islamische Publikation
 
 > Damit wir einander kennen
 
-Vorschau https://cansi798.github.io/nun/site/
+Wissenschaftlich und journalistisch hochwertige Beiträge zu Religion, Denken und Gesellschaft, in sechs Formen. Quellen, Studie, Essay, Reportage, Gespräch und Vortrag. Die Formen stehen in `content/site.json` unter `formate`, die wissenschaftlichen Arten einer Studie (Fachartikel, Abschlussarbeit, Kurzbeitrag und weitere) unter `arten`.
+
+Vorschau https://cansi798.github.io/nun/
 
 ## Technik
 
@@ -42,7 +44,7 @@ npm test             # prüft dist/ (Seiten, Links, Metadaten, Tokens, Alternati
 
 1. PDF nach `public/pdf/<slug>.pdf` legen.
 2. Datei `content/beitraege/<slug>.json` anlegen. Am einfachsten über das Formular unter `/intern/`, das die Datei erzeugt.
-3. Pflichtfelder sind slug, format, rubrik, titel, autoren, datum und abstract_de. Format und Rubrik müssen in `content/site.json` stehen. Höchstens fünf Schlagworte.
+3. Pflichtfelder sind slug, format (die Form), rubrik, titel, autoren, datum und abstract_de. Optional ist art, etwa abschlussarbeit. Form, Art und Rubrik müssen in `content/site.json` stehen. Höchstens fünf Schlagworte.
 4. `npm run build`. Fehlerhafte Angaben brechen den Bau mit einer klaren Meldung ab.
 
 ## Veröffentlichen

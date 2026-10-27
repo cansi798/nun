@@ -6,9 +6,9 @@ import PublicationCard from "../../components/PublicationCard.astro";
 import { ladeDaten } from "../../lib/daten";
 const d = await ladeDaten();
 const hefte = [...d.ausgaben.values()].sort((a, b) => b.jahrgang - a.jahrgang || b.heft - a.heft);
-const arbeiten = d.beitraege.filter((b) => b.format === "abschlussarbeit");
+const arbeiten = d.beitraege.filter((b) => b.art === "abschlussarbeit");
 const jahre = [...new Set(arbeiten.map((b) => b.abschlussjahr).filter(Boolean))].sort().reverse();
-const laufend = d.beitraege.filter((b) => !b.ausgabe && b.format !== "abschlussarbeit");
+const laufend = d.beitraege.filter((b) => !b.ausgabe && b.art !== "abschlussarbeit");
 ---
 <Basis titel="Ausgaben" aktiv="ausgaben/">
   <div class="seite">
@@ -22,7 +22,7 @@ const laufend = d.beitraege.filter((b) => !b.ausgabe && b.format !== "abschlussa
     ))}
     {laufend.length > 0 && (
       <section class="abschnitt-klein" aria-labelledby="laufend">
-        <div class="abschnitt-kopf"><h2 class="t-h2" id="laufend">Laufend erschienen</h2><hr class="goldlinie"></div>
+        <h2 class="t-h2" id="laufend">Laufend erschienen</h2>
         <p class="abschnitt-text">Beiträge außerhalb der Hefte, etwa aus der Reihe Ilm Kompakt.</p>
         <div class="raster">{laufend.map((b) => <PublicationCard b={b} />)}</div>
       </section>

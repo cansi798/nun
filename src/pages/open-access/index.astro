@@ -19,8 +19,10 @@ const punkte = [
     <Seitenkopf titel="Open Access" einleitung="Alle Beiträge auf NUN sind frei zugänglich, ohne Bezahlschranke und ohne Gebühren für die Autorinnen und Autoren." />
     <div class="schmal">
       <dl class="tabelle-dl">{punkte.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
-      <h2 class="t-h2 abstand-oben">Formate</h2>
-      <dl class="tabelle-dl">{d.site.formate.map((f) => <div><dt>{f.name}</dt><dd>{f.beschreibung}<span class="unterzeile"> · {f.umfang}</span></dd></div>)}</dl>
+      <h2 class="t-h2 abstand-oben">Formen</h2>
+      <dl class="tabelle-dl">{d.site.formate.map((f) => <div><dt>{f.name}</dt><dd>{f.beschreibung}</dd></div>)}</dl>
+      <h2 class="t-h2 abstand-oben">Wissenschaftliche Arten</h2>
+      <dl class="tabelle-dl">{d.site.arten.map((a) => <div><dt>{a.name}</dt><dd>{a.umfang}</dd></div>)}</dl>
       <h2 class="t-h2 abstand-oben">Zitieren</h2>
       <p>Zitiert wird nach APA 7. Jede Artikelseite zeigt einen fertigen Zitiervorschlag und bietet ihn als BibTeX und RIS für Zotero und Citavi an.</p>
     </div>

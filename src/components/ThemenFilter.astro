@@ -7,7 +7,7 @@ const d = await ladeDaten();
 const genutzt = (feld: "rubrik" | "format") => new Set(d.beitraege.map((b) => b[feld]));
 const gruppen = [
   { name: "rubrik", label: "Rubrik", werte: d.site.rubriken.filter((r) => genutzt("rubrik").has(r.slug)).map((r) => [r.slug, r.name]) },
-  { name: "format", label: "Format", werte: d.site.formate.filter((f) => genutzt("format").has(f.slug)).map((f) => [f.slug, f.name]) },
+  { name: "format", label: "Form", werte: d.site.formate.filter((f) => genutzt("format").has(f.slug)).map((f) => [f.slug, f.name]) },
 ];
 ---
 <div class="filter" data-filter>

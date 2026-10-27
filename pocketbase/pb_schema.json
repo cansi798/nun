@@ -165,14 +165,27 @@
         "required": true,
         "maxSelect": 1,
         "values": [
-          "artikel",
+          "quellen",
+          "studie",
+          "essay",
+          "reportage",
+          "gespraech",
+          "vortrag"
+        ]
+      },
+      {
+        "name": "art",
+        "type": "select",
+        "required": false,
+        "maxSelect": 1,
+        "values": [
+          "fachartikel",
           "abschlussarbeit",
           "kurzbeitrag",
           "uebersetzung",
           "arbeitspapier",
           "rezension",
-          "buch",
-          "podcast"
+          "buch"
         ]
       },
       {

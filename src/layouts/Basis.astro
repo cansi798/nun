@@ -4,6 +4,7 @@ import "../styles/tokens.css";
 import "../styles/site.css";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import MobilNav from "../components/MobilNav.astro";
 import { ladeDaten } from "../lib/daten";
 import { absolut, link } from "../lib/hilfen";
 // Die drei Schnitte, die jede Seite oberhalb der Falz braucht, früh laden
@@ -55,5 +56,6 @@ const kanonisch = absolut(Astro.url.pathname.replace(import.meta.env.BASE_URL, "
 <slot />
 </main>
 <SiteFooter />
+<MobilNav aktiv={aktiv} />
 </body>
 </html>

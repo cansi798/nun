@@ -22,10 +22,10 @@ if (ausgabe) {
   m.push(["citation_volume", ausgabe.jahrgang], ["citation_issue", ausgabe.heft], ["citation_issn", d.site.issn]);
   if (b.seiten?.length) m.push(["citation_firstpage", b.seiten[0]], ["citation_lastpage", b.seiten[1]]);
 }
-if (b.format === "abschlussarbeit")
+if (b.art === "abschlussarbeit")
   m.push(["citation_dissertation_institution", d.site.institut], ["citation_dissertation_name", "Bachelorarbeit"]);
 const ld: Record<string, unknown> = {
-  "@context": "https://schema.org", "@type": b.format === "abschlussarbeit" ? "Thesis" : "ScholarlyArticle",
+  "@context": "https://schema.org", "@type": b.art === "abschlussarbeit" ? "Thesis" : b.format === "gespraech" || b.format === "vortrag" ? "CreativeWork" : "ScholarlyArticle",
   headline: b.titel, ...(b.untertitel ? { alternativeHeadline: b.untertitel } : {}),
   author: autoren.map((a) => ({ "@type": "Person", name: autorName(a), ...(a.orcid ? { sameAs: `https://orcid.org/${a.orcid}` } : {}) })),
   datePublished: b.datum, inLanguage: "de", keywords: b.schlagworte, abstract: b.abstract_de,

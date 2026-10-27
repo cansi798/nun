@@ -10,34 +10,170 @@
   "institut": "Islamologisches Institut / FIS Novi Pazar",
   "kontakt": "redaktion@example.org",
   "navigation": [
-    { "titel": "Publikationen", "pfad": "publikationen/" },
-    { "titel": "Ausgaben", "pfad": "ausgaben/" },
-    { "titel": "Themen", "pfad": "themen/" },
-    { "titel": "Podcast", "pfad": "podcast/" },
-    { "titel": "Über uns", "pfad": "ueber-uns/" }
+    {
+      "titel": "Beiträge",
+      "pfad": "publikationen/"
+    },
+    {
+      "titel": "Formen",
+      "pfad": "formen/"
+    },
+    {
+      "titel": "Themen",
+      "pfad": "themen/"
+    },
+    {
+      "titel": "Ausgaben",
+      "pfad": "ausgaben/"
+    },
+    {
+      "titel": "Über uns",
+      "pfad": "ueber-uns/"
+    }
   ],
   "formate": [
-    { "slug": "artikel", "name": "Artikel", "kennzeichnung": "ARTIKEL", "umfang": "6.000 bis 12.000 Wörter", "beschreibung": "Wissenschaftlicher Beitrag in einer Ausgabe der Zeitschrift" },
-    { "slug": "abschlussarbeit", "name": "Abschlussarbeit", "kennzeichnung": "ABSCHLUSSARBEIT", "umfang": "wie eingereicht", "beschreibung": "Überarbeitete Bachelorarbeit aus dem Studium, mit Jahr und Betreuung" },
-    { "slug": "kurzbeitrag", "name": "Kurzbeitrag", "kennzeichnung": "KURZBEITRAG", "umfang": "2.000 bis 5.000 Wörter", "beschreibung": "Kurze Untersuchung zu einer einzelnen Frage" },
-    { "slug": "uebersetzung", "name": "Übersetzung", "kennzeichnung": "ÜBERSETZUNG", "umfang": "frei", "beschreibung": "Kommentierte Übersetzung eines klassischen Werks oder Kapitels" },
-    { "slug": "arbeitspapier", "name": "Arbeitspapier", "kennzeichnung": "ARBEITSPAPIER", "umfang": "frei", "beschreibung": "Vorläufiger Stand einer Forschung, darf später überarbeitet werden" },
-    { "slug": "rezension", "name": "Rezension", "kennzeichnung": "REZENSION", "umfang": "1.000 bis 2.500 Wörter", "beschreibung": "Besprechung eines Buchs" },
-    { "slug": "buch", "name": "Buch", "kennzeichnung": "BUCH", "umfang": "ab 150 Seiten", "beschreibung": "Monografie, eigenständig erschienen" },
-    { "slug": "podcast", "name": "Podcast", "kennzeichnung": "PODCAST", "umfang": "20 bis 60 Minuten", "beschreibung": "Gespräch oder Vortrag zu einem Beitrag" }
+    {
+      "slug": "quellen",
+      "name": "Quellen",
+      "kennzeichnung": "QUELLEN",
+      "kurz": "Lektüren für die Gegenwart",
+      "beschreibung": "Lektüren aus Quraan, Sunnah, Hadiith, Geisteswissenschaften und Naturwissenschaften, gelesen für die Gegenwart."
+    },
+    {
+      "slug": "studie",
+      "name": "Studie",
+      "kennzeichnung": "STUDIE",
+      "kurz": "Wissenschaft mit Belegen",
+      "beschreibung": "Die wissenschaftliche Arbeit, mit Belegen. Dazu gehören Fachartikel, Abschlussarbeiten und Kurzbeiträge."
+    },
+    {
+      "slug": "essay",
+      "name": "Essay",
+      "kennzeichnung": "ESSAY",
+      "kurz": "Denken in langer Form",
+      "beschreibung": "Das Denken in langer Form."
+    },
+    {
+      "slug": "reportage",
+      "name": "Reportage",
+      "kennzeichnung": "REPORTAGE",
+      "kurz": "Journalismus vor Ort",
+      "beschreibung": "Der Journalismus vor Ort."
+    },
+    {
+      "slug": "gespraech",
+      "name": "Gespräch",
+      "kennzeichnung": "GESPRÄCH",
+      "kurz": "Podcast und Video",
+      "beschreibung": "Podcast und Video. Die Autorinnen und Autoren im Gespräch über ihre Themen."
+    },
+    {
+      "slug": "vortrag",
+      "name": "Vortrag",
+      "kennzeichnung": "VORTRAG",
+      "kurz": "vor Ort und virtuell",
+      "beschreibung": "Konferenz, Lehrsaal und Moscheeverein, vor Ort und virtuell."
+    }
   ],
   "rubriken": [
-    { "slug": "quraan-wissenschaft", "name": "Quraan-Wissenschaft", "faecher": "Tafsiir, aayaatul-ahkaam, al-qiraa-ah" },
-    { "slug": "hadiith-wissenschaft", "name": "Hadiith-Wissenschaft", "faecher": "'uluumul-hadiith, ahaadiithul-ahkaam" },
-    { "slug": "aqiidah", "name": "'Aqiidah", "faecher": "Lehre der Iimaan-Inhalte" },
-    { "slug": "fiqh", "name": "Fiqh", "faecher": "'Ibaadaat, al-ahwaalusch-schachsiyyah, Fiqhul-mu'aamalaat" },
-    { "slug": "usuul-ul-fiqh", "name": "Usuul-ul-fiqh", "faecher": "Fiqh-Regeln, Fiqh-Theorien, asch-scharii'ah" },
-    { "slug": "siirah-und-geschichte", "name": "Siirah und Geschichte", "faecher": "Fiqhus-siirah, Islamische Geschichte, Kultur und Zivilisation" },
-    { "slug": "tazkiyah-und-achlaaq", "name": "Tazkiyah und Achlaaq", "faecher": "Ethik und Läuterung" },
-    { "slug": "islamische-philosophie", "name": "Islamische Philosophie", "faecher": "Philosophie und Denkschulen" },
-    { "slug": "arabisch-und-uebersetzung", "name": "Arabisch und Übersetzung", "faecher": "Arabisch, Grundsätze der Übersetzung, Terminologie" },
-    { "slug": "religionspaedagogik", "name": "Religionspädagogik", "faecher": "Islamische Religionspädagogik, Unterrichtsmethoden im IRU, Psychologie" },
-    { "slug": "dawah-und-medien", "name": "Da'wah und Medien", "faecher": "Da'wah und Chataabah, Medien und Kommunikation" },
-    { "slug": "islam-in-europa", "name": "Islam in Europa", "faecher": "Muslime im deutschsprachigen Raum, Islamisches Banking, Moscheebau, interreligiöse Fragen" }
+    {
+      "slug": "quraan-wissenschaft",
+      "name": "Quraan-Wissenschaft",
+      "faecher": "Tafsiir, aayaatul-ahkaam, al-qiraa-ah"
+    },
+    {
+      "slug": "hadiith-wissenschaft",
+      "name": "Hadiith-Wissenschaft",
+      "faecher": "'uluumul-hadiith, ahaadiithul-ahkaam"
+    },
+    {
+      "slug": "aqiidah",
+      "name": "'Aqiidah",
+      "faecher": "Lehre der Iimaan-Inhalte"
+    },
+    {
+      "slug": "fiqh",
+      "name": "Fiqh",
+      "faecher": "'Ibaadaat, al-ahwaalusch-schachsiyyah, Fiqhul-mu'aamalaat"
+    },
+    {
+      "slug": "usuul-ul-fiqh",
+      "name": "Usuul-ul-fiqh",
+      "faecher": "Fiqh-Regeln, Fiqh-Theorien, asch-scharii'ah"
+    },
+    {
+      "slug": "siirah-und-geschichte",
+      "name": "Siirah und Geschichte",
+      "faecher": "Fiqhus-siirah, Islamische Geschichte, Kultur und Zivilisation"
+    },
+    {
+      "slug": "tazkiyah-und-achlaaq",
+      "name": "Tazkiyah und Achlaaq",
+      "faecher": "Ethik und Läuterung"
+    },
+    {
+      "slug": "islamische-philosophie",
+      "name": "Islamische Philosophie",
+      "faecher": "Philosophie und Denkschulen"
+    },
+    {
+      "slug": "arabisch-und-uebersetzung",
+      "name": "Arabisch und Übersetzung",
+      "faecher": "Arabisch, Grundsätze der Übersetzung, Terminologie"
+    },
+    {
+      "slug": "religionspaedagogik",
+      "name": "Religionspädagogik",
+      "faecher": "Islamische Religionspädagogik, Unterrichtsmethoden im IRU, Psychologie"
+    },
+    {
+      "slug": "dawah-und-medien",
+      "name": "Da'wah und Medien",
+      "faecher": "Da'wah und Chataabah, Medien und Kommunikation"
+    },
+    {
+      "slug": "islam-in-europa",
+      "name": "Islam in Europa",
+      "faecher": "Muslime im deutschsprachigen Raum, Islamisches Banking, Moscheebau, interreligiöse Fragen"
+    }
+  ],
+  "thema": "Religion · Denken · Gesellschaft",
+  "idee": "Die Idee hinter NUN ist einfach. Wir bieten wissenschaftlich und journalistisch hochwertige Beiträge zu Religion, Denken und Gesellschaft. Wir arbeiten klassisch, aber am Puls der Zeit.",
+  "arten": [
+    {
+      "slug": "fachartikel",
+      "name": "Fachartikel",
+      "umfang": "6.000 bis 12.000 Wörter"
+    },
+    {
+      "slug": "abschlussarbeit",
+      "name": "Abschlussarbeit",
+      "umfang": "wie eingereicht"
+    },
+    {
+      "slug": "kurzbeitrag",
+      "name": "Kurzbeitrag",
+      "umfang": "2.000 bis 5.000 Wörter"
+    },
+    {
+      "slug": "uebersetzung",
+      "name": "Übersetzung",
+      "umfang": "frei"
+    },
+    {
+      "slug": "arbeitspapier",
+      "name": "Arbeitspapier",
+      "umfang": "frei"
+    },
+    {
+      "slug": "rezension",
+      "name": "Rezension",
+      "umfang": "1.000 bis 2.500 Wörter"
+    },
+    {
+      "slug": "buch",
+      "name": "Buch",
+      "umfang": "ab 150 Seiten"
+    }
   ]
 }

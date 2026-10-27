@@ -1,0 +1,28 @@
+---
+import Basis from "../../layouts/Basis.astro";
+import Seitenkopf from "../../components/Seitenkopf.astro";
+import FormIcon from "../../components/FormIcon.astro";
+import { ladeDaten } from "../../lib/daten";
+import { anzahl, link } from "../../lib/hilfen";
+const d = await ladeDaten();
+---
+<Basis titel="Formen" aktiv="formen/" beschreibung={d.site.idee}>
+  <div class="seite">
+    <Seitenkopf titel="Formen" rubrik={d.site.thema} einleitung={d.site.idee} />
+    <ul class="formen-gitter gross">
+      {d.site.formate.map((f) => {
+        const n = d.beitraege.filter((b) => b.format === f.slug).length;
+        const ziel = f.slug === "gespraech" ? "podcast/" : `publikationen/?format=${f.slug}`;
+        return (
+          <li class="form-karte">
+            <FormIcon form={f.slug} />
+            <h2 class="t-h3"><a class="karte-link" href={link(ziel)}>{f.name}</a></h2>
+            <p class="form-kurz meta gold">{f.kurz}</p>
+            <p>{f.beschreibung}</p>
+            <span class={n ? "meta gold" : "meta"}>{n ? anzahl(n, "Beitrag", "Beiträge") : "In Vorbereitung"}</span>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</Basis>

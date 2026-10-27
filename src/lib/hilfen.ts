@@ -40,17 +40,17 @@ export function apa(d: Daten, b: Beitrag, html = true) {
     const a = d.ausgaben.get(b.ausgabe)!;
     const seiten = b.seiten?.length ? `, ${b.seiten[0]}–${b.seiten[1]}` : "";
     s += `${t(b.titel)}. ${k(d.site.name)}, ${k(a.jahrgang)}(${a.heft})${seiten}. ${urlTeil}`;
-  } else if (b.format === "abschlussarbeit") {
+  } else if (b.art === "abschlussarbeit") {
     s += `${k(b.titel)} [Bachelorarbeit, ${t(d.site.institut)}]. ${d.site.name}. ${urlTeil}`;
   } else {
-    s += `${k(b.titel)} [${d.formate.get(b.format)!.name}]. ${d.site.name}. ${urlTeil}`;
+    s += `${k(b.titel)} [${(b.art && d.arten.get(b.art)?.name) || d.formate.get(b.format)!.name}]. ${d.site.name}. ${urlTeil}`;
   }
   return s;
 }
 
 export function bibtex(d: Daten, b: Beitrag) {
   const autoren = b.autoren.map((s) => `${d.autoren.get(s)!.nachname}, ${d.autoren.get(s)!.vorname}`).join(" and ");
-  const typ = b.ausgabe ? "article" : b.format === "abschlussarbeit" ? "thesis" : "misc";
+  const typ = b.ausgabe ? "article" : b.art === "abschlussarbeit" ? "thesis" : "misc";
   const f: [string, unknown][] = [["author", autoren], ["title", b.titel], ["year", b.datum.slice(0, 4)]];
   if (b.doi) f.push(["doi", b.doi]);
   f.push(["url", zitierUrl(b)], ["langid", "german"], ["license", d.site.lizenz.name]);
@@ -70,7 +70,7 @@ export function bibtex(d: Daten, b: Beitrag) {
 }
 
 export function ris(d: Daten, b: Beitrag) {
-  const z: [string, unknown][] = [["TY", b.ausgabe ? "JOUR" : b.format === "abschlussarbeit" ? "THES" : "GEN"]];
+  const z: [string, unknown][] = [["TY", b.ausgabe ? "JOUR" : b.art === "abschlussarbeit" ? "THES" : "GEN"]];
   for (const s of b.autoren) z.push(["AU", `${d.autoren.get(s)!.nachname}, ${d.autoren.get(s)!.vorname}`]);
   z.push(["TI", b.titel], ["PY", b.datum.slice(0, 4)], ["DA", b.datum.replaceAll("-", "/")]);
   if (b.doi) z.push(["DO", b.doi]);

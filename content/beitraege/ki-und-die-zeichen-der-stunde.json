@@ -1,5 +1,5 @@
 {
-  "format": "kurzbeitrag",
+  "format": "quellen",
   "reihe": "Ilm Kompakt · Islamisches Wissen in 30 Minuten",
   "autoren": [
     "can-bilger"
@@ -43,5 +43,6 @@
         "Was heißt das für mich?"
       ]
     }
-  ]
+  ],
+  "art": "kurzbeitrag"
 }

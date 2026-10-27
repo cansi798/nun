@@ -2,6 +2,7 @@
 // Startseite nach dem Mockup "Startseite".
 import Basis from "../layouts/Basis.astro";
 import PublicationCard from "../components/PublicationCard.astro";
+import FormIcon from "../components/FormIcon.astro";
 import { aktuelleAusgabe, beitraegeIn, ladeDaten } from "../lib/daten";
 import { anzahl, link } from "../lib/hilfen";
 const d = await ladeDaten();
@@ -17,18 +18,18 @@ const themen = [...d.site.rubriken].sort((a, b) => zaehle(b.slug) - zaehle(a.slu
 const saeulen = [
   ["Frei zugänglich", `Alle Beiträge sind ohne Anmeldung lesbar und dürfen unter ${d.site.lizenz.name} geteilt werden.`],
   ["Zitierfähig", "Jeder Beitrag erhält eine DOI und einen Zitiervorschlag nach APA 7 und ist für Google Scholar ausgezeichnet."],
-  ["Aus dem Studium", "Die Autorinnen und Autoren haben Islam-Wissenschaft am Islamologischen Institut studiert."],
+  ["Klassisch und aktuell", "Wir lesen die klassischen Quellen gründlich und schreiben für die Fragen von heute."],
 ];
 ---
 <Basis>
   <section class="hero">
     <div class="hero-text">
-      <div class="meta gold kennzeile"><span>Open Access</span><span class="punkt" aria-hidden="true"></span><span>Islam-Wissenschaft im deutschsprachigen Raum</span></div>
+      <div class="meta gold kennzeile">{["Open Access", ...d.site.thema.split(" · ")].map((t, i) => <span class="teil">{i > 0 && <span class="punkt" aria-hidden="true" />}{t}</span>)}</div>
       <h1 class="t-hero">Islamisches Wissen, wissenschaftlich aufbereitet und frei für alle</h1>
       <hr class="goldlinie">
-      <p class="t-lead">Fachartikel, Abschlussarbeiten und Übersetzungen von Absolventinnen und Absolventen des Islamologischen Instituts. Ohne Anmeldung, ohne Bezahlschranke, mit DOI und Zitiervorschlag.</p>
+      <p class="t-lead">Wissenschaftlich und journalistisch hochwertige Beiträge zu Religion, Denken und Gesellschaft. Klassisch gearbeitet, am Puls der Zeit. Frei zugänglich, mit DOI und Zitiervorschlag.</p>
       <div class="knopf-zeile">
-        <a class="knopf primaer" href={link("publikationen/")}>Publikationen entdecken</a>
+        <a class="knopf primaer" href={link("publikationen/")}>Beiträge entdecken</a>
         <a class="knopf sekundaer" href={link("ausgaben/")}>Aktuelles Heft ansehen</a>
       </div>
       <p class="t-slogan leitsatz">{d.site.leitsatz}</p>
@@ -45,6 +46,23 @@ const saeulen = [
     </div>
     <div class="raster">{neueste.map((b, i) => <PublicationCard b={b} klasse={i === 3 ? "nur-tablet" : undefined} />)}</div>
     <div class="knopf-zeile abstand-oben nur-schmal"><a class="knopf sekundaer" href={link("publikationen/")}>Alle Publikationen</a></div>
+  </section>
+
+  <section class="abschnitt seite" id="formen" aria-labelledby="formen-titel">
+    <div class="abschnitt-kopf zeile">
+      <div><h2 class="t-h1" id="formen-titel">Sechs Formen</h2><hr class="goldlinie"></div>
+      <a class="textlink nur-breit" href={link("formen/")}>Alle Formen</a>
+    </div>
+    <p class="abschnitt-text">{d.site.idee}</p>
+    <ul class="formen-gitter">
+      {d.site.formate.map((f) => (
+        <li class="form-karte">
+          <FormIcon form={f.slug} />
+          <h3 class="form-name"><a class="karte-link" href={link(f.slug === "gespraech" ? "podcast/" : `publikationen/?format=${f.slug}`)}>{f.name}</a></h3>
+          <p class="form-kurz">{f.kurz}</p>
+        </li>
+      ))}
+    </ul>
   </section>
 
   {heft && (
@@ -94,7 +112,7 @@ const saeulen = [
         <div class="meta gold">Reihe</div>
         <h2 class="t-h2">{reiheName}</h2>
         <p>{reiheZusatz}. Kompakte Bände zu Fragen, die Muslime im deutschsprachigen Raum heute bewegen, mit Quraan-Bedeutungen nach Amir Zaidan und belegten Quellen.</p>
-        <a class="textlink" href={link("publikationen/?format=kurzbeitrag")}>Alle Bände der Reihe</a>
+        <a class="textlink" href={link("publikationen/?format=quellen")}>Alle Bände der Reihe</a>
       </div>
     ) : (
       <div class="panel gold-flaeche">
@@ -105,10 +123,10 @@ const saeulen = [
       </div>
     )}
     <div class="panel" id="podcast">
-      <div class="meta gold">Podcast</div>
-      <h2 class="t-h2">Die Autoren im Gespräch über ihre Beiträge</h2>
-      <p>Die ersten Folgen sind in Vorbereitung.</p>
-      <a class="knopf primaer mit-icon" href={link("podcast/")}><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z"/></svg>Zum Podcast</a>
+      <div class="meta gold">Gespräch · Podcast und Video</div>
+      <h2 class="t-h2">Die Autoren im Gespräch über ihre Themen</h2>
+      <p>Die ersten Folgen sind in Vorbereitung. Vorträge aus Konferenz, Lehrsaal und Moscheeverein folgen, vor Ort und virtuell.</p>
+      <a class="knopf primaer mit-icon" href={link("podcast/")}><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z"/></svg>Gespräche ansehen</a>
     </div>
   </section>
 

@@ -7,5 +7,6 @@ const teile = [d.formate.get(b.format)!.name, d.rubriken.get(b.rubrik)!.name];
 if (lesezeit && b.lesezeit) teile.push(`${b.lesezeit} Min Lesezeit`);
 ---
 <div class="meta kennzeile">
-  {teile.map((t, i) => <>{i > 0 && <span class="punkt" aria-hidden="true" />}<span>{t}</span></>)}
+  {/* Punkt und folgender Text bleiben zusammen, damit keine Zeile auf einem Punkt endet */}
+  {teile.map((t, i) => <span class="teil">{i > 0 && <span class="punkt" aria-hidden="true" />}{t}</span>)}
 </div>

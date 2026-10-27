@@ -13,7 +13,10 @@ export type Block =
   | { typ: "aaya"; arabisch: string; uebersetzung: string; quelle: string };
 export interface Version { version: number; datum: string; hinweis: string }
 export interface Beitrag {
+  /** Form nach dem Konzept von NUN (quellen, studie, essay, reportage, gespraech, vortrag) */
   slug: string; format: string; rubrik: string; reihe?: string;
+  /** Wissenschaftliche Art innerhalb der Form, etwa fachartikel oder abschlussarbeit */
+  art?: string;
   titel: string; untertitel?: string; autoren: string[];
   ausgabe?: string; seiten?: number[]; datum: string; doi?: string;
   lesezeit?: number; umfang_seiten?: number; abschlussjahr?: number; betreuung?: string;
@@ -21,18 +24,20 @@ export interface Beitrag {
   pdf?: string; version: number; versionen?: Version[];
   inhalt?: Block[]; literatur?: string[]; beispiel?: boolean;
 }
-export interface Format { slug: string; name: string; kennzeichnung: string; umfang: string; beschreibung: string }
+export interface Format { slug: string; name: string; kennzeichnung: string; kurz: string; beschreibung: string }
+export interface Art { slug: string; name: string; umfang: string }
 export interface Rubrik { slug: string; name: string; faecher: string }
 export interface Site {
-  name: string; leitsatz: string; beschreibung: string; issn: string;
+  name: string; leitsatz: string; beschreibung: string; issn: string; thema: string; idee: string;
   lizenz: { name: string; url: string }; institut: string; kontakt: string;
-  navigation: { titel: string; pfad: string }[]; formate: Format[]; rubriken: Rubrik[];
+  navigation: { titel: string; pfad: string }[]; formate: Format[]; arten: Art[]; rubriken: Rubrik[];
 }
 export interface Daten {
   site: Site;
   autoren: Map<string, Autor>;
   ausgaben: Map<string, Ausgabe>;
   formate: Map<string, Format>;
+  arten: Map<string, Art>;
   rubriken: Map<string, Rubrik>;
   beitraege: Beitrag[];
 }

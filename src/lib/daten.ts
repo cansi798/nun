@@ -9,7 +9,7 @@ import type { Ausgabe, Autor, Beitrag, Daten, Site } from "./typen";
 const ROOT = process.cwd();
 const lies = <T>(p: string): T => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
 
-async function ausJson(): Promise<Omit<Daten, "site" | "formate" | "rubriken">> {
+async function ausJson(): Promise<Omit<Daten, "site" | "formate" | "arten" | "rubriken">> {
   const dir = join(ROOT, "content/beitraege");
   const beitraege = readdirSync(dir).filter((f) => f.endsWith(".json"))
     .map((f) => lies<Beitrag>(`content/beitraege/${f}`));
@@ -20,7 +20,7 @@ async function ausJson(): Promise<Omit<Daten, "site" | "formate" | "rubriken">> 
   };
 }
 
-async function ausPocketBase(): Promise<Omit<Daten, "site" | "formate" | "rubriken">> {
+async function ausPocketBase(): Promise<Omit<Daten, "site" | "formate" | "arten" | "rubriken">> {
   const { default: PocketBase } = await import("pocketbase");
   const url = process.env.PB_URL;
   if (!url) throw new Error("NUN_QUELLE=pocketbase braucht PB_URL");
@@ -46,7 +46,7 @@ async function ausPocketBase(): Promise<Omit<Daten, "site" | "formate" | "rubrik
       jahr: a.jahr, titel: a.titel, pdf: datei(a, "pdf"),
     }])),
     beitraege: beitraegeRoh.map((b: any) => ({
-      slug: b.slug, format: b.format, rubrik: b.rubrik, reihe: b.reihe,
+      slug: b.slug, format: b.format, art: b.art || undefined, rubrik: b.rubrik, reihe: b.reihe,
       titel: b.titel, untertitel: b.untertitel,
       autoren: (b.autoren as string[]).map((id) => autorSlug.get(id) ?? id),
       ausgabe: b.ausgabe ? ausgabeId.get(b.ausgabe) : "",
@@ -70,6 +70,7 @@ export function ladeDaten(): Promise<Daten> {
     const d: Daten = {
       site, ...quelle,
       formate: new Map(site.formate.map((f) => [f.slug, f])),
+      arten: new Map(site.arten.map((a) => [a.slug, a])),
       rubriken: new Map(site.rubriken.map((r) => [r.slug, r])),
       beitraege: quelle.beitraege.sort((a, b) => b.datum.localeCompare(a.datum)),
     };
@@ -91,12 +92,13 @@ export function pruefe(d: Daten): string[] {
     if (slugs.has(n)) f.push(`${n}: slug doppelt`);
     slugs.add(n);
     if (!/^[a-z0-9-]+$/.test(n)) f.push(`${n}: slug nur a-z, 0-9 und Bindestrich`);
-    if (!d.formate.has(b.format)) f.push(`${n}: unbekanntes Format '${b.format}'`);
+    if (!d.formate.has(b.format)) f.push(`${n}: unbekannte Form '${b.format}'`);
+    if (b.art && !d.arten.has(b.art)) f.push(`${n}: unbekannte Art '${b.art}'`);
     if (!d.rubriken.has(b.rubrik)) f.push(`${n}: unbekannte Rubrik '${b.rubrik}'`);
     for (const a of b.autoren ?? []) if (!d.autoren.has(a)) f.push(`${n}: unbekannte Person '${a}'`);
     if (b.ausgabe && !d.ausgaben.has(b.ausgabe)) f.push(`${n}: unbekannte Ausgabe '${b.ausgabe}'`);
     if ((b.schlagworte?.length ?? 0) > 5) f.push(`${n}: höchstens fünf Schlagworte`);
-    if (b.format === "abschlussarbeit" && !b.abschlussjahr) f.push(`${n}: abschlussjahr fehlt`);
+    if (b.art === "abschlussarbeit" && !b.abschlussjahr) f.push(`${n}: abschlussjahr fehlt`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(b.datum)) f.push(`${n}: datum als JJJJ-MM-TT`);
   }
   return f;

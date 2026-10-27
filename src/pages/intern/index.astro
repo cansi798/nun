@@ -29,9 +29,10 @@ const pb = import.meta.env.PUBLIC_PB_URL ?? "";
       <fieldset class="formular-gruppe">
         <legend class="t-h3">Angaben</legend>
         <div class="feld-paar">
-          <label class="feld"><span class="feld-label">Format</span><select name="format" required>{d.site.formate.map((f) => <option value={f.slug}>{f.name}</option>)}</select></label>
+          <label class="feld"><span class="feld-label">Form</span><select name="format" required>{d.site.formate.map((f) => <option value={f.slug}>{f.name}</option>)}</select></label>
           <label class="feld"><span class="feld-label">Rubrik</span><select name="rubrik" required>{d.site.rubriken.map((r) => <option value={r.slug}>{r.name}</option>)}</select></label>
         </div>
+        <label class="feld"><span class="feld-label">Art, bei Studien</span><select name="art"><option value="">Keine Angabe</option>{d.site.arten.map((a) => <option value={a.slug}>{a.name}</option>)}</select></label>
         <label class="feld"><span class="feld-label">Titel</span><input name="titel" required></label>
         <label class="feld"><span class="feld-label">Untertitel</span><input name="untertitel"></label>
         <label class="feld"><span class="feld-label">Reihe</span><input name="reihe" enterkeyhint="next"><span class="unterzeile">Etwa Ilm Kompakt · Islamisches Wissen in 30 Minuten</span></label>
@@ -91,7 +92,7 @@ const pb = import.meta.env.PUBLIC_PB_URL ?? "";
       const s = slug(String(d.get("titel")));
       const von = Number(d.get("seite_von")), bis = Number(d.get("seite_bis"));
       const daten = {
-        slug: s, format: d.get("format"), rubrik: d.get("rubrik"), reihe: d.get("reihe") || undefined,
+        slug: s, format: d.get("format"), art: d.get("art") || undefined, rubrik: d.get("rubrik"), reihe: d.get("reihe") || undefined,
         titel: d.get("titel"), untertitel: d.get("untertitel"), autoren: d.getAll("autoren"),
         ausgabe: d.get("ausgabe"), seiten: von && bis ? [von, bis] : [], datum: d.get("datum"),
         doi: d.get("doi"), abstract_de: d.get("abstract_de"), abstract_en: d.get("abstract_en"),
