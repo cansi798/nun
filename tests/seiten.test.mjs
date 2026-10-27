@@ -5,6 +5,8 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const DIST = new URL("../dist/", import.meta.url).pathname;
+// Basis-Pfad wie beim Bauen, etwa /nun/ in der GitHub-Action
+const BASE = process.env.NUN_BASE || "/";
 const alle = (d) => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? alle(join(d, f)) : [join(d, f)]));
 const html = alle(DIST).filter((f) => f.endsWith(".html"));
 const beitraege = readdirSync("content/beitraege").map((f) => JSON.parse(readFileSync(`content/beitraege/${f}`, "utf8")));
@@ -21,8 +23,10 @@ test("alle Seiten existieren", () => {
 test("interne Links führen zu Dateien", () => {
   const kaputt = [];
   for (const f of html) {
-    for (const [, url] of readFileSync(f, "utf8").matchAll(/(?:href|src|data)="(\/[^"#?]*)/g)) {
-      const ziel = join(DIST, url.endsWith("/") ? url + "index.html" : url);
+    for (const [, url] of readFileSync(f, "utf8").matchAll(/(?:href|src|data|data-src)="(\/[^"#?]*)/g)) {
+      assert.ok(url.startsWith(BASE), `${f.replace(DIST, "")} -> ${url} liegt außerhalb von ${BASE}`);
+      const pfad = "/" + url.slice(BASE.length);
+      const ziel = join(DIST, pfad.endsWith("/") ? pfad + "index.html" : pfad);
       if (!existsSync(ziel)) kaputt.push(`${f.replace(DIST, "")} -> ${url}`);
     }
   }

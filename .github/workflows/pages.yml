@@ -25,19 +25,24 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Bauen
+        env:
+          NUN_BASE: /nun/
+          NUN_SITE: https://cansi798.github.io
         run: npm run build
       - name: Tests
+        env:
+          NUN_BASE: /nun/
         run: npm test
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
-  # Läuft nur von Hand, solange Pages auf "Deploy from branch" steht (dann wird site/ ausgeliefert).
-  # Nach Umstellung auf Settings, Pages, Source "GitHub Actions" die if-Zeile entfernen
-  # und im Schritt Bauen NUN_BASE und NUN_SITE setzen.
+  # Veröffentlicht dist/ unter https://cansi798.github.io/nun/, sobald in den Einstellungen
+  # Settings, Pages, Source auf "GitHub Actions" steht. Bis dahin schlägt der Schritt ohne
+  # Folgen fehl und site/ wird weiter über "Deploy from branch" ausgeliefert.
   deploy:
-    if: github.event_name == 'workflow_dispatch'
     needs: build
+    continue-on-error: true
     runs-on: ubuntu-latest
     environment:
       name: github-pages
