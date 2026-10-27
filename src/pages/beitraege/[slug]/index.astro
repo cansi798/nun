@@ -26,7 +26,7 @@ const weitere = d.beitraege.filter((x) => x.slug !== b.slug)
 <Basis titel={b.titel} beschreibung={b.abstract_de} aktiv="publikationen/" typ="article" datum={b.datum}>
   <ScholarMeta slot="kopf" b={b} />
   <article class="seite beitrag">
-    <nav class="pfad meta" aria-label="Pfad"><a href={link("publikationen/")}>Publikationen</a><span aria-hidden="true">/</span><span>{d.rubriken.get(b.rubrik)!.name}</span></nav>
+    <nav class="pfad meta" aria-label="Pfad"><a href={link("publikationen/")}>Beiträge</a><span aria-hidden="true">/</span><span>{d.rubriken.get(b.rubrik)!.name}</span></nav>
     <div class="beitrag-raster">
       <div class="beitrag-haupt">
         <ArtikelKopf b={b} />

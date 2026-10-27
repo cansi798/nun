@@ -42,10 +42,10 @@ const saeulen = [
   <section class="abschnitt seite" aria-labelledby="neu">
     <div class="abschnitt-kopf zeile">
       <div><h2 class="t-h1" id="neu">Neue Beiträge</h2><hr class="goldlinie"></div>
-      <a class="textlink nur-breit" href={link("publikationen/")}>Alle Publikationen</a>
+      <a class="textlink nur-breit" href={link("publikationen/")}>Alle Beiträge</a>
     </div>
     <div class="raster">{neueste.map((b, i) => <PublicationCard b={b} klasse={i === 3 ? "nur-tablet" : undefined} />)}</div>
-    <div class="knopf-zeile abstand-oben nur-schmal"><a class="knopf sekundaer" href={link("publikationen/")}>Alle Publikationen</a></div>
+    <div class="knopf-zeile abstand-oben nur-schmal"><a class="knopf sekundaer" href={link("publikationen/")}>Alle Beiträge</a></div>
   </section>
 
   <section class="abschnitt seite" id="formen" aria-labelledby="formen-titel">
@@ -55,13 +55,18 @@ const saeulen = [
     </div>
     <p class="abschnitt-text">NUN veröffentlicht in sechs Formen. Jede hat ihre eigene Arbeitsweise, alle folgen denselben wissenschaftlichen Maßstäben.</p>
     <ul class="formen-gitter">
-      {d.site.formate.map((f) => (
-        <li class="form-karte">
-          <FormIcon form={f.slug} />
-          <h3 class="form-name"><a class="karte-link" href={link(f.slug === "gespraech" ? "podcast/" : `publikationen/?format=${f.slug}`)}>{f.name}</a></h3>
-          <p class="form-kurz">{f.kurz}</p>
-        </li>
-      ))}
+      {d.site.formate.map((f) => {
+        // Formen ohne Beiträge sind noch kein Link, damit kein leerer Filter entsteht
+        const n = d.beitraege.filter((b) => b.format === f.slug).length;
+        const ziel = f.slug === "gespraech" ? "podcast/" : n ? `publikationen/?format=${f.slug}` : "";
+        return (
+          <li class:list={["form-karte", { "form-leer": !ziel }]}>
+            <FormIcon form={f.slug} />
+            <h3 class="form-name">{ziel ? <a class="karte-link" href={link(ziel)}>{f.name}</a> : f.name}</h3>
+            <p class="form-kurz">{ziel || f.slug === "gespraech" ? f.kurz : `${f.kurz} · bald`}</p>
+          </li>
+        );
+      })}
     </ul>
   </section>
 

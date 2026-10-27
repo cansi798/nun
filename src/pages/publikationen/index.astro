@@ -7,9 +7,9 @@ import { ladeDaten } from "../../lib/daten";
 import { anzahl } from "../../lib/hilfen";
 const d = await ladeDaten();
 ---
-<Basis titel="Publikationen" aktiv="publikationen/">
+<Basis titel="Beiträge" aktiv="publikationen/">
   <div class="seite">
-    <Seitenkopf titel="Publikationen" einleitung={`Alle Beiträge auf NUN, frei zugänglich unter ${d.site.lizenz.name}. Wählen Sie Rubriken und Formate oder suchen Sie nach Titel, Autor und Schlagwort.`} />
+    <Seitenkopf titel="Beiträge" einleitung={`Alle Beiträge auf NUN, frei zugänglich unter ${d.site.lizenz.name}. Wählen Sie Rubriken und Formen oder suchen Sie nach Titel, Autor und Schlagwort.`} />
     <ThemenFilter />
     <p class="meta treffer" aria-live="polite" data-treffer>{anzahl(d.beitraege.length, "Beitrag", "Beiträge")}</p>
     <div class="raster" data-liste>{d.beitraege.map((b) => <PublicationCard b={b} ueberschrift="h2" />)}</div>
