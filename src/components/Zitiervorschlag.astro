@@ -8,7 +8,7 @@ const d = await ladeDaten();
 <section class="zitiervorschlag" id="zitieren" tabindex="-1" aria-labelledby="zitier-titel">
   <div class="zitier-kopf">
     <h2 class="meta gold" id="zitier-titel">So zitieren Sie diesen Beitrag</h2>
-    <button class="knopf sekundaer klein" type="button" data-kopieren="#apa">Kopieren</button>
+    <button class="knopf sekundaer klein" type="button" data-kopieren="#apa">Zitat kopieren</button>
   </div>
   <p class="zitat-text" id="apa" set:html={apa(d, b)} />
   <div class="link-zeile">
@@ -21,10 +21,11 @@ const d = await ladeDaten();
   document.querySelectorAll<HTMLButtonElement>("[data-kopieren]").forEach((k) => k.addEventListener("click", async () => {
     const ziel = document.querySelector<HTMLElement>(k.dataset.kopieren!);
     if (!ziel) return;
-    try { await navigator.clipboard.writeText(ziel.innerText); } catch {}
-    k.textContent = "Kopiert";
+    let ok = true;
+    try { await navigator.clipboard.writeText(ziel.innerText); } catch { ok = false; }
+    k.textContent = ok ? "Kopiert" : "Bitte markieren und kopieren";
     const ansage = document.querySelector("[data-kopiert]");
-    if (ansage) ansage.textContent = "Zitiervorschlag kopiert";
-    setTimeout(() => { k.textContent = "Kopieren"; if (ansage) ansage.textContent = ""; }, 2000);
+    if (ansage) ansage.textContent = ok ? "Zitiervorschlag kopiert" : "Kopieren nicht möglich, bitte den Text markieren";
+    setTimeout(() => { k.textContent = "Zitat kopieren"; if (ansage) ansage.textContent = ""; }, 2500);
   }));
 </script>

@@ -22,7 +22,7 @@ const laufend = d.beitraege.filter((b) => !b.ausgabe && b.format !== "abschlussa
     ))}
     {laufend.length > 0 && (
       <section class="abschnitt-klein" aria-labelledby="laufend">
-        <h2 class="t-h2" id="laufend">Laufend erschienen</h2>
+        <div class="abschnitt-kopf"><h2 class="t-h2" id="laufend">Laufend erschienen</h2><hr class="goldlinie"></div>
         <p class="abschnitt-text">Beiträge außerhalb der Hefte, etwa aus der Reihe Ilm Kompakt.</p>
         <div class="raster">{laufend.map((b) => <PublicationCard b={b} />)}</div>
       </section>

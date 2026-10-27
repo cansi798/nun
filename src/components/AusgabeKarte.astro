@@ -17,8 +17,8 @@ const bs = beitraegeIn(d, a.id);
     <p class="unterzeile">{bs.length ? anzahl(bs.length, "Beitrag", "Beiträge") : "In Vorbereitung"} · ISSN {d.site.issn}</p>
     {bs.length > 0 && <ul class="punktliste">{bs.slice(0, 3).map((b) => <li>{b.titel}</li>)}</ul>}
     <div class="link-zeile">
-      <a class="textlink" href={link(`ausgaben/${a.id}/`)}>Inhaltsverzeichnis</a>
-      {a.pdf && <a class="textlink" href={link(a.pdf)}>Gesamt-PDF</a>}
+      <a class="textlink" href={link(`ausgaben/${a.id}/`)}>Inhaltsverzeichnis ansehen</a>
+      {a.pdf && <a class="textlink" href={link(a.pdf)}>Gesamt-PDF herunterladen</a>}
     </div>
   </div>
 </article>

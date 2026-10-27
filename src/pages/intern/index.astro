@@ -34,10 +34,13 @@ const pb = import.meta.env.PUBLIC_PB_URL ?? "";
         </div>
         <label class="feld"><span class="feld-label">Titel</span><input name="titel" required></label>
         <label class="feld"><span class="feld-label">Untertitel</span><input name="untertitel"></label>
-        <label class="feld"><span class="feld-label">Reihe</span><input name="reihe" placeholder="etwa Ilm Kompakt · Islamisches Wissen in 30 Minuten"></label>
-        <label class="feld"><span class="feld-label">Autorin oder Autor</span><select name="autoren" multiple required size="3">{[...d.autoren.values()].map((a) => <option value={a.slug}>{autorName(a)}</option>)}</select></label>
+        <label class="feld"><span class="feld-label">Reihe</span><input name="reihe" enterkeyhint="next"><span class="unterzeile">Etwa Ilm Kompakt · Islamisches Wissen in 30 Minuten</span></label>
+        <fieldset class="feld auswahl" data-autoren>
+          <legend class="feld-label">Autorin oder Autor</legend>
+          {[...d.autoren.values()].map((a) => <label class="haken"><input type="checkbox" name="autoren" value={a.slug}><span>{autorName(a)}</span></label>)}
+        </fieldset>
         <label class="feld"><span class="feld-label">Ausgabe</span><select name="ausgabe"><option value="">Ohne Heft (laufend)</option>{[...d.ausgaben.values()].map((a) => <option value={a.id}>{ausgabeText(a)}</option>)}</select></label>
-        <div class="feld-paar">
+        <div class="feld-paar zahlen">
           <label class="feld"><span class="feld-label">Erste Seite</span><input name="seite_von" type="number" min="1" inputmode="numeric"></label>
           <label class="feld"><span class="feld-label">Letzte Seite</span><input name="seite_bis" type="number" min="1" inputmode="numeric"></label>
         </div>
@@ -49,8 +52,8 @@ const pb = import.meta.env.PUBLIC_PB_URL ?? "";
         <label class="feld"><span class="feld-label">Abstract auf Englisch</span><textarea name="abstract_en" rows="4"></textarea></label>
         <label class="feld"><span class="feld-label">Schlagworte, durch Komma getrennt, höchstens fünf</span><input name="schlagworte" required></label>
       </fieldset>
-      <p class="formular-meldung" data-meldung role="status" hidden></p>
-      <div class="knopf-zeile"><button class="knopf primaer" type="submit">{pb ? "Als Entwurf speichern" : "Datei erzeugen"}</button></div>
+      <p class="formular-meldung" data-meldung role="status"></p>
+      <div class="knopf-zeile absenden"><button class="knopf primaer" type="submit">{pb ? "Als Entwurf speichern" : "Datei erzeugen"}</button></div>
     </form>
   </div>
 </Basis>
@@ -63,12 +66,12 @@ const pb = import.meta.env.PUBLIC_PB_URL ?? "";
     const meldung = form.querySelector<HTMLElement>("[data-meldung]")!;
     const pbUrl = form.dataset.pb;
     let datei: File | null = null;
-    const melde = (t: string) => { meldung.textContent = t; meldung.hidden = false; };
+    const melde = (t: string) => { meldung.textContent = ""; requestAnimationFrame(() => (meldung.textContent = t)); };
     const nimm = (f?: File | null) => {
       if (!f) return;
       if (f.type !== "application/pdf") return melde("Bitte nur PDF-Dateien hochladen.");
       if (f.size > 50 * 1024 * 1024) return melde("Die Datei ist größer als 50 MB.");
-      datei = f; meldung.hidden = true; anzeige.hidden = false;
+      datei = f; meldung.textContent = ""; anzeige.hidden = false;
       anzeige.textContent = `${f.name} · ${(f.size / 1048576).toFixed(1).replace(".", ",")} MB · bereit`;
     };
     ["dragenter", "dragover"].forEach((t) => feld.addEventListener(t, (e) => { e.preventDefault(); feld.classList.add("ueber"); }));
@@ -81,6 +84,7 @@ const pb = import.meta.env.PUBLIC_PB_URL ?? "";
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (!form.querySelector("[data-autoren] input:checked")) return melde("Bitte mindestens eine Autorin oder einen Autor wählen.");
       const d = new FormData(form);
       const worte = String(d.get("schlagworte")).split(",").map((s) => s.trim()).filter(Boolean);
       if (worte.length > 5) return melde("Höchstens fünf Schlagworte.");
@@ -99,7 +103,7 @@ const pb = import.meta.env.PUBLIC_PB_URL ?? "";
           const pb = new PocketBase(pbUrl);
           await pb.collection("_superusers").authWithPassword(String(d.get("email")), String(d.get("passwort")))
             .catch(() => pb.collection("redaktion").authWithPassword(String(d.get("email")), String(d.get("passwort"))));
-          const autorIds = await Promise.all(daten.autoren.map(async (a) => (await pb.collection("autoren").getFirstListItem(`slug="${a}"`)).id));
+          const autorIds = await Promise.all(daten.autoren.map(async (a) => (await pb.collection("autoren").getFirstListItem(pb.filter("slug = {:s}", { s: a }))).id));
           const fd = new FormData();
           for (const [k, v] of Object.entries({ ...daten, autoren: undefined, seiten: undefined, pdf: undefined, ausgabe: undefined })) {
             if (v === undefined || v === null) continue;
@@ -107,7 +111,7 @@ const pb = import.meta.env.PUBLIC_PB_URL ?? "";
           }
           autorIds.forEach((id) => fd.append("autoren", id));
           if (von && bis) { fd.append("seite_von", String(von)); fd.append("seite_bis", String(bis)); }
-          if (daten.ausgabe) fd.append("ausgabe", (await pb.collection("ausgaben").getFirstListItem(`kennung="${daten.ausgabe}"`)).id);
+          if (daten.ausgabe) fd.append("ausgabe", (await pb.collection("ausgaben").getFirstListItem(pb.filter("kennung = {:k}", { k: String(daten.ausgabe) }))).id);
           if (datei) fd.append("pdf", datei);
           fd.append("veroeffentlicht", "false");
           await pb.collection("beitraege").create(fd);

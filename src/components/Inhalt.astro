@@ -3,14 +3,22 @@ import type { Block } from "../lib/typen";
 import AayaZitat from "./AayaZitat.astro";
 import { anker } from "../lib/hilfen";
 const { bloecke = [] } = Astro.props as { bloecke?: Block[] };
+// Feste Sprungmarken der Artikelseite nicht doppelt vergeben
+const vergeben = new Set(["lesen", "zitieren", "literatur", "weitere", "abstract-titel", "inhalt"]);
+const id = (text: string, i: number) => {
+  let a = anker(text) || `abschnitt-${i + 1}`;
+  for (let n = 2; vergeben.has(a); n++) a = `${anker(text) || "abschnitt"}-${n}`;
+  vergeben.add(a);
+  return a;
+};
 ---
 <div class="fliesstext">
-  {bloecke.map((b) => {
+  {bloecke.map((b, i) => {
     switch (b.typ) {
       case "absatz": return <p>{b.text}</p>;
       case "zitat": return <blockquote><p>{b.text}</p></blockquote>;
-      case "h2": return <h2 class="t-h2" id={anker(b.text)}>{b.text}</h2>;
-      case "h3": return <h3 class="t-h3" id={anker(b.text)}>{b.text}</h3>;
+      case "h2": return <h2 class="t-h2" id={id(b.text, i)}>{b.text}</h2>;
+      case "h3": return <h3 class="t-h3" id={id(b.text, i)}>{b.text}</h3>;
       case "liste": return <ul class="punktliste">{b.punkte.map((p) => <li>{p}</li>)}</ul>;
       case "nummern": return <ol class="nummernliste">{b.punkte.map((p) => <li>{p}</li>)}</ol>;
       case "aaya": return <AayaZitat {...b} />;

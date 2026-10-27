@@ -1,0 +1,353 @@
+[
+  {
+    "id": "nunredaktion001",
+    "name": "redaktion",
+    "type": "auth",
+    "listRule": null,
+    "viewRule": "id = @request.auth.id",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "fields": [
+      {
+        "name": "name",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "passwordAuth": {
+      "enabled": true,
+      "identityFields": [
+        "email"
+      ]
+    }
+  },
+  {
+    "id": "nunautoren00001",
+    "name": "autoren",
+    "type": "base",
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "@request.auth.collectionName = \"redaktion\"",
+    "updateRule": "@request.auth.collectionName = \"redaktion\"",
+    "deleteRule": null,
+    "fields": [
+      {
+        "name": "slug",
+        "type": "text",
+        "required": true,
+        "pattern": "^[a-z0-9-]+$"
+      },
+      {
+        "name": "vorname",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "nachname",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "abschluss",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "abschlussjahr",
+        "type": "number",
+        "required": false,
+        "onlyInt": true
+      },
+      {
+        "name": "bachelorarbeit",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "orcid",
+        "type": "text",
+        "required": false,
+        "pattern": "^$|^\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]$"
+      },
+      {
+        "name": "bio",
+        "type": "text",
+        "max": 2000
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX idx_autoren_slug ON autoren (slug)"
+    ]
+  },
+  {
+    "id": "nunausgaben0001",
+    "name": "ausgaben",
+    "type": "base",
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "@request.auth.collectionName = \"redaktion\"",
+    "updateRule": "@request.auth.collectionName = \"redaktion\"",
+    "deleteRule": null,
+    "fields": [
+      {
+        "name": "kennung",
+        "type": "text",
+        "required": true,
+        "pattern": "^[a-z0-9-]+$"
+      },
+      {
+        "name": "jahrgang",
+        "type": "number",
+        "required": true,
+        "onlyInt": true
+      },
+      {
+        "name": "heft",
+        "type": "number",
+        "required": true,
+        "onlyInt": true
+      },
+      {
+        "name": "jahreszeit",
+        "type": "select",
+        "required": true,
+        "maxSelect": 1,
+        "values": [
+          "Frühjahr",
+          "Herbst"
+        ]
+      },
+      {
+        "name": "jahr",
+        "type": "number",
+        "required": true,
+        "onlyInt": true
+      },
+      {
+        "name": "titel",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "pdf",
+        "type": "file",
+        "maxSelect": 1,
+        "maxSize": 209715200,
+        "mimeTypes": [
+          "application/pdf"
+        ]
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX idx_ausgaben_kennung ON ausgaben (kennung)"
+    ]
+  },
+  {
+    "id": "nunbeitraege001",
+    "name": "beitraege",
+    "type": "base",
+    "listRule": "veroeffentlicht = true || @request.auth.collectionName = \"redaktion\"",
+    "viewRule": "veroeffentlicht = true || @request.auth.collectionName = \"redaktion\"",
+    "createRule": "@request.auth.collectionName = \"redaktion\"",
+    "updateRule": "@request.auth.collectionName = \"redaktion\"",
+    "deleteRule": null,
+    "fields": [
+      {
+        "name": "slug",
+        "type": "text",
+        "required": true,
+        "pattern": "^[a-z0-9-]+$"
+      },
+      {
+        "name": "format",
+        "type": "select",
+        "required": true,
+        "maxSelect": 1,
+        "values": [
+          "artikel",
+          "abschlussarbeit",
+          "kurzbeitrag",
+          "uebersetzung",
+          "arbeitspapier",
+          "rezension",
+          "buch",
+          "podcast"
+        ]
+      },
+      {
+        "name": "rubrik",
+        "type": "select",
+        "required": true,
+        "maxSelect": 1,
+        "values": [
+          "quraan-wissenschaft",
+          "hadiith-wissenschaft",
+          "aqiidah",
+          "fiqh",
+          "usuul-ul-fiqh",
+          "siirah-und-geschichte",
+          "tazkiyah-und-achlaaq",
+          "islamische-philosophie",
+          "arabisch-und-uebersetzung",
+          "religionspaedagogik",
+          "dawah-und-medien",
+          "islam-in-europa"
+        ]
+      },
+      {
+        "name": "reihe",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "titel",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "untertitel",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "autoren",
+        "type": "relation",
+        "required": true,
+        "collectionId": "nunautoren00001",
+        "maxSelect": 10,
+        "cascadeDelete": false
+      },
+      {
+        "name": "ausgabe",
+        "type": "relation",
+        "required": false,
+        "collectionId": "nunausgaben0001",
+        "maxSelect": 1,
+        "cascadeDelete": false
+      },
+      {
+        "name": "seite_von",
+        "type": "number",
+        "required": false,
+        "onlyInt": true
+      },
+      {
+        "name": "seite_bis",
+        "type": "number",
+        "required": false,
+        "onlyInt": true
+      },
+      {
+        "name": "datum",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "doi",
+        "type": "text",
+        "required": false,
+        "pattern": "^$|^10\\.\\d{4,}/.+$"
+      },
+      {
+        "name": "lesezeit",
+        "type": "number",
+        "required": false,
+        "onlyInt": true
+      },
+      {
+        "name": "umfang_seiten",
+        "type": "number",
+        "required": false,
+        "onlyInt": true
+      },
+      {
+        "name": "abschlussjahr",
+        "type": "number",
+        "required": false,
+        "onlyInt": true
+      },
+      {
+        "name": "betreuung",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "beispiel",
+        "type": "bool"
+      },
+      {
+        "name": "abstract_de",
+        "type": "text",
+        "required": true,
+        "max": 5000
+      },
+      {
+        "name": "abstract_en",
+        "type": "text",
+        "max": 5000
+      },
+      {
+        "name": "schlagworte",
+        "type": "json",
+        "maxSize": 2000
+      },
+      {
+        "name": "inhalt",
+        "type": "json",
+        "maxSize": 2000000
+      },
+      {
+        "name": "literatur",
+        "type": "json",
+        "maxSize": 200000
+      },
+      {
+        "name": "pdf",
+        "type": "file",
+        "maxSelect": 1,
+        "maxSize": 52428800,
+        "mimeTypes": [
+          "application/pdf"
+        ]
+      },
+      {
+        "name": "version",
+        "type": "number",
+        "required": false,
+        "onlyInt": true
+      },
+      {
+        "name": "versionen",
+        "type": "json",
+        "maxSize": 20000
+      },
+      {
+        "name": "veroeffentlicht",
+        "type": "bool"
+      },
+      {
+        "name": "geprueft_von",
+        "type": "relation",
+        "collectionId": "nunredaktion001",
+        "maxSelect": 1,
+        "cascadeDelete": false
+      },
+      {
+        "name": "created",
+        "type": "autodate",
+        "onCreate": true,
+        "onUpdate": false
+      },
+      {
+        "name": "updated",
+        "type": "autodate",
+        "onCreate": true,
+        "onUpdate": true
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX idx_beitraege_slug ON beitraege (slug)"
+    ]
+  }
+]

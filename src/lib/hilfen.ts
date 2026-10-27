@@ -1,3 +1,4 @@
+import { statSync } from "node:fs";
 import type { Ausgabe, Autor, Beitrag, Daten } from "./typen";
 
 const BASE = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + "/";
@@ -64,7 +65,8 @@ export function bibtex(d: Daten, b: Beitrag) {
   }
   const key = `${d.autoren.get(b.autoren[0])!.nachname}${b.datum.slice(0, 4)}${b.slug.split("-")[0]}`
     .toLowerCase().replace(/[^a-z0-9]/g, "");
-  return `@${typ}{${key},\n${f.map(([k, v]) => `  ${k} = {${v}}`).join(",\n")}\n}\n`;
+  const bib = (v: unknown) => String(v).replace(/([&%$#_])/g, "\\$1");
+  return `@${typ}{${key},\n${f.map(([k, v]) => `  ${k} = {${k === "url" ? v : bib(v)}}`).join(",\n")}\n}\n`;
 }
 
 export function ris(d: Daten, b: Beitrag) {
@@ -72,7 +74,7 @@ export function ris(d: Daten, b: Beitrag) {
   for (const s of b.autoren) z.push(["AU", `${d.autoren.get(s)!.nachname}, ${d.autoren.get(s)!.vorname}`]);
   z.push(["TI", b.titel], ["PY", b.datum.slice(0, 4)], ["DA", b.datum.replaceAll("-", "/")]);
   if (b.doi) z.push(["DO", b.doi]);
-  z.push(["UR", zitierUrl(b)], ["LA", "de"], ["AB", b.abstract_de]);
+  z.push(["UR", zitierUrl(b)], ["LA", "de"], ["AB", b.abstract_de.replace(/\s*\r?\n\s*/g, " ")]);
   for (const k of b.schlagworte) z.push(["KW", k]);
   if (b.reihe) z.push(["T2", b.reihe.split(" · ")[0]]);
   if (b.ausgabe) {
@@ -84,4 +86,12 @@ export function ris(d: Daten, b: Beitrag) {
   return z.map(([k, v]) => `${k}  - ${v}`).join("\r\n") + "\r\n";
 }
 
-export const anker = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+/** Sprungmarke aus einer Überschrift, Umlaute umgeschrieben. Leer bei rein arabischem Text. */
+export const anker = (s: string) => s.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+  .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+/** Größe eines lokalen PDFs in public/, etwa "2,3 MB". Leer für PocketBase-Adressen. */
+export function pdfGroesse(pfad?: string) {
+  if (!pfad || /^https?:/.test(pfad)) return "";
+  try { return `${(statSync(`public/${pfad}`).size / 1048576).toFixed(1).replace(".", ",")} MB`; } catch { return ""; }
+}

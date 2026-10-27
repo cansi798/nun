@@ -24,7 +24,7 @@ const ld = JSON.stringify({ "@context": "https://schema.org", "@type": "Person",
     </Seitenkopf>
     <section aria-labelledby="bt">
       <h2 class="t-h2" id="bt">Beiträge auf NUN</h2>
-      <div class="raster abstand-oben">{beitraegeVon(d, a.slug).map((b) => <PublicationCard b={b} />)}</div>
+      <div class="raster abstand-oben">{beitraegeVon(d, a.slug).map((b) => <PublicationCard b={b} kompakt />)}</div>
     </section>
   </div>
 </Basis>

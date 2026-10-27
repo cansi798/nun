@@ -63,7 +63,9 @@ const gruppen = [
     };
     const start = new URLSearchParams(location.search);
     gruppen.forEach((g) => {
-      setzen(g, (start.get(g.dataset.gruppe!) || "").split(",").filter(Boolean));
+      // Nur Werte übernehmen, für die es einen Knopf gibt, sonst bleibt "Alle" aktiv
+      const da = new Set([...g.querySelectorAll<HTMLButtonElement>("button")].map((b) => b.dataset.wert));
+      setzen(g, (start.get(g.dataset.gruppe!) || "").split(",").filter((w) => w && da.has(w)));
       g.addEventListener("click", (e) => {
         const b = (e.target as HTMLElement).closest("button");
         if (!b) return;

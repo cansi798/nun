@@ -17,7 +17,7 @@ const d = await ladeDaten();
     </button>
     <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
       {d.site.navigation.map((n) => (
-        <a href={link(n.pfad)} class={n.pfad === aktiv ? "on" : undefined} aria-current={n.pfad === aktiv ? "page" : undefined}>{n.titel}</a>
+        <a href={link(n.pfad)} class={n.pfad === aktiv ? "on" : undefined} aria-current={n.pfad === aktiv ? (Astro.url.pathname.endsWith(n.pfad) ? "page" : "true") : undefined}>{n.titel}</a>
       ))}
       <button class="thema-knopf" type="button" data-thema-wechsel>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
@@ -36,6 +36,7 @@ const d = await ladeDaten();
     const neu = doc.dataset.theme === "dark" ? "light" : "dark";
     doc.dataset.theme = neu;
     try { localStorage.setItem("nun-thema", neu); } catch {}
+    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((m) => (m.content = neu === "dark" ? "#1F2E4D" : "#F5EFE2"));
     knopfText();
   }));
   const menue = document.querySelector<HTMLButtonElement>(".menue-knopf");
@@ -46,6 +47,12 @@ const d = await ladeDaten();
     document.body.classList.toggle("menue-offen", offen);
   };
   menue?.addEventListener("click", () => setze(!nav?.classList.contains("offen")));
+  nav?.addEventListener("click", (e) => { if ((e.target as HTMLElement).closest("a")) setze(false); });
+  addEventListener("pageshow", () => setze(false));
+  document.querySelector(".kopf")?.addEventListener("focusout", (e) => {
+    const fe = e as FocusEvent;
+    if (nav?.classList.contains("offen") && !(fe.currentTarget as HTMLElement).contains(fe.relatedTarget as Node)) setze(false);
+  });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && nav?.classList.contains("offen")) { setze(false); menue?.focus(); }
   });

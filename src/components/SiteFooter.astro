@@ -9,16 +9,17 @@ const spalten = [
 ---
 <footer class="fuss">
   <div class="fuss-in">
+    <hr class="goldlinie">
     <div class="fuss-oben">
       <img class="fuss-logo" src={link("logo/logo-quer-hell.svg")} alt="NUN, Damit wir einander kennen" width="240" height="88">
-      <div class="fuss-spalten">
+      <nav class="fuss-spalten" aria-label="Fußzeile">
         {spalten.map((s) => (
           <div>
             <h2 class="fuss-titel">{s.titel}</h2>
             <ul>{s.links.map(([t, p]) => <li><a href={link(p)}>{t}</a></li>)}</ul>
           </div>
         ))}
-      </div>
+      </nav>
     </div>
     <div class="fuss-unten">
       <span>Alle Beiträge frei zugänglich unter {d.site.lizenz.name} · ISSN {d.site.issn}</span>

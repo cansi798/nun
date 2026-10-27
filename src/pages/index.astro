@@ -11,6 +11,8 @@ const heftBeitraege = heft ? beitraegeIn(d, heft.id) : [];
 const reihe = d.beitraege.find((b) => b.reihe)?.reihe;
 const [reiheName, reiheZusatz] = reihe?.split(" · ") ?? [];
 const zaehle = (r: string) => d.beitraege.filter((b) => b.rubrik === r).length;
+// Auf der Startseite nur sechs Themen, die mit Beiträgen zuerst. Alle stehen unter /themen/.
+const themen = [...d.site.rubriken].sort((a, b) => zaehle(b.slug) - zaehle(a.slug)).slice(0, 6);
 const saeulen = [
   ["Frei zugänglich", `Alle Beiträge sind ohne Anmeldung lesbar und dürfen unter ${d.site.lizenz.name} geteilt werden.`],
   ["Zitierfähig", "Jeder Beitrag erhält eine DOI und einen Zitiervorschlag nach APA 7 und ist für Google Scholar ausgezeichnet."],
@@ -20,13 +22,13 @@ const saeulen = [
 <Basis>
   <section class="hero">
     <div class="hero-text">
-      <div class="meta gold kennzeile"><span>Open Access</span><span class="punkt" aria-hidden="true"></span><span>Islamwissenschaften im deutschsprachigen Raum</span></div>
+      <div class="meta gold kennzeile"><span>Open Access</span><span class="punkt" aria-hidden="true"></span><span>Islam-Wissenschaft im deutschsprachigen Raum</span></div>
       <h1 class="t-hero">Islamisches Wissen, wissenschaftlich aufbereitet und frei für alle</h1>
       <hr class="goldlinie">
       <p class="t-lead">Fachartikel, Abschlussarbeiten und Übersetzungen von Absolventinnen und Absolventen des Islamologischen Instituts. Ohne Anmeldung, ohne Bezahlschranke, mit DOI und Zitiervorschlag.</p>
       <div class="knopf-zeile">
         <a class="knopf primaer" href={link("publikationen/")}>Publikationen entdecken</a>
-        <a class="knopf sekundaer" href={link("ausgaben/")}>Aktuelles Heft</a>
+        <a class="knopf sekundaer" href={link("ausgaben/")}>Aktuelles Heft ansehen</a>
       </div>
       <p class="t-slogan leitsatz">{d.site.leitsatz}</p>
     </div>
@@ -38,9 +40,10 @@ const saeulen = [
   <section class="abschnitt seite" aria-labelledby="neu">
     <div class="abschnitt-kopf zeile">
       <div><h2 class="t-h1" id="neu">Neue Beiträge</h2><hr class="goldlinie"></div>
-      <a class="textlink" href={link("publikationen/")}>Alle Publikationen</a>
+      <a class="textlink nur-breit" href={link("publikationen/")}>Alle Publikationen</a>
     </div>
     <div class="raster">{neueste.map((b) => <PublicationCard b={b} />)}</div>
+    <div class="knopf-zeile abstand-oben nur-schmal"><a class="knopf sekundaer" href={link("publikationen/")}>Alle Publikationen</a></div>
   </section>
 
   {heft && (
@@ -60,8 +63,8 @@ const saeulen = [
               : <li>Die Beiträge werden zurzeit gelesen und erscheinen vorab online.</li>}
           </ul>
           <div class="knopf-zeile">
-            <a class="knopf hell" href={link(`ausgaben/${heft.id}/`)}>Inhaltsverzeichnis</a>
-            {heft.pdf && <a class="knopf sekundaer-invers" href={link(heft.pdf)}>Gesamt-PDF</a>}
+            <a class="knopf hell" href={link(`ausgaben/${heft.id}/`)}>Inhaltsverzeichnis ansehen</a>
+            {heft.pdf && <a class="knopf sekundaer-invers" href={link(heft.pdf)}>Gesamt-PDF herunterladen</a>}
           </div>
         </div>
       </div>
@@ -73,7 +76,7 @@ const saeulen = [
     <hr class="goldlinie">
     <p class="abschnitt-text">Die Rubriken folgen den Fächern des Studiums der Islam-Wissenschaft.</p>
     <div class="themen-gitter">
-      {d.site.rubriken.map((r) => (
+      {themen.map((r) => (
         <a class="thema-zelle" href={link(`publikationen/?rubrik=${r.slug}`)}>
           <span class="thema-name">{r.name}</span>
           <span class="thema-faecher">{r.faecher}</span>
@@ -81,6 +84,7 @@ const saeulen = [
         </a>
       ))}
     </div>
+    <div class="knopf-zeile abstand-oben"><a class="knopf sekundaer" href={link("themen/")}>Alle {d.site.rubriken.length} Themen</a></div>
   </section>
 
   <section class="abschnitt seite panels">

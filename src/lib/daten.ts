@@ -48,11 +48,12 @@ async function ausPocketBase(): Promise<Omit<Daten, "site" | "formate" | "rubrik
     beitraege: beitraegeRoh.map((b: any) => ({
       slug: b.slug, format: b.format, rubrik: b.rubrik, reihe: b.reihe,
       titel: b.titel, untertitel: b.untertitel,
-      autoren: (b.autoren as string[]).map((id) => autorSlug.get(id)!).filter(Boolean),
+      autoren: (b.autoren as string[]).map((id) => autorSlug.get(id) ?? id),
       ausgabe: b.ausgabe ? ausgabeId.get(b.ausgabe) : "",
       seiten: b.seite_von && b.seite_bis ? [b.seite_von, b.seite_bis] : [],
-      datum: String(b.datum).slice(0, 10), doi: b.doi, lesezeit: b.lesezeit,
-      umfang_seiten: b.umfang_seiten, abstract_de: b.abstract_de, abstract_en: b.abstract_en,
+      datum: String(b.datum).slice(0, 10), doi: b.doi, lesezeit: b.lesezeit || undefined,
+      umfang_seiten: b.umfang_seiten || undefined, abschlussjahr: b.abschlussjahr || undefined,
+      betreuung: b.betreuung || undefined, beispiel: !!b.beispiel, abstract_de: b.abstract_de, abstract_en: b.abstract_en,
       schlagworte: b.schlagworte ?? [], pdf: datei(b, "pdf"), version: b.version || 1,
       versionen: b.versionen ?? [], inhalt: b.inhalt ?? [], literatur: b.literatur ?? [],
     })),
@@ -95,6 +96,7 @@ export function pruefe(d: Daten): string[] {
     for (const a of b.autoren ?? []) if (!d.autoren.has(a)) f.push(`${n}: unbekannte Person '${a}'`);
     if (b.ausgabe && !d.ausgaben.has(b.ausgabe)) f.push(`${n}: unbekannte Ausgabe '${b.ausgabe}'`);
     if ((b.schlagworte?.length ?? 0) > 5) f.push(`${n}: höchstens fünf Schlagworte`);
+    if (b.format === "abschlussarbeit" && !b.abschlussjahr) f.push(`${n}: abschlussjahr fehlt`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(b.datum)) f.push(`${n}: datum als JJJJ-MM-TT`);
   }
   return f;

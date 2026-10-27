@@ -1,88 +1,60 @@
 # NUN
 
-NUN ist eine wissenschaftliche Open-Access-Plattform für islamische Publikationen in Deutschland, Österreich und der Schweiz. Hier veröffentlichen Absolventinnen und Absolventen des Islamologischen Instituts Fachartikel, Abschlussarbeiten, Übersetzungen und Bücher zu allen Fächern ihres Studiums. Alle Beiträge sind frei zugänglich unter CC BY 4.0.
+NUN ist eine wissenschaftliche Open-Access-Plattform für islamische Publikationen in Deutschland, Österreich und der Schweiz. Absolventinnen und Absolventen des Islamologischen Instituts veröffentlichen hier Fachartikel, Abschlussarbeiten, Übersetzungen und Bücher, frei zugänglich für alle.
 
 > Damit wir einander kennen
 
-Dieses Repository enthält die statische Website. Sie wird mit `build.py` erzeugt und braucht nur Python 3 mit der Standardbibliothek.
+Vorschau https://cansi798.github.io/nun/site/
+
+## Technik
+
+- [Astro](https://astro.build) 5 erzeugt eine rein statische Seite. Sie läuft auf jedem Webserver, ohne Datenbank im Betrieb.
+- Inhalte kommen heute aus `content/`, später aus [PocketBase](https://pocketbase.io). Umgeschaltet wird mit `NUN_QUELLE=pocketbase`, siehe `pocketbase/README.md`.
+- Gestaltung nach dem CI-Handbuch in `design-system/`. `src/styles/tokens.css` wird aus `design-system/tokens.json` erzeugt und nie von Hand geändert.
+- Mobile first. Die Grundregeln in `src/styles/site.css` gelten für das Telefon, ab 640 px folgt das Tablet, ab 960 px der Desktop.
+- Schriften liegen lokal (DSGVO). Es werden keine fremden Server angefragt.
 
 ## Aufbau
 
-| Pfad | Inhalt |
+| Ordner | Inhalt |
 | --- | --- |
-| `build.py` | Generator. Liest `content/`, prüft die Daten und schreibt die fertige Seite nach `dist/` |
-| `content/site.json` | Name, ISSN, Lizenz, Navigation, Formate und Rubriken |
-| `content/autoren.json` | Autorinnen und Autoren |
-| `content/ausgaben.json` | Hefte mit Jahrgang, Heft und Jahreszeit |
-| `content/beitraege/*.json` | ein Beitrag pro Datei |
-| `static/` | Dateien, die unverändert kopiert werden (CSS, JavaScript, Schriften, Logos, PDFs) |
-| `design-system/` | Handbuch, Umsetzung, Komponenten und `tokens.json` |
-| `tests/` | Tests für den Generator |
-| `.github/workflows/pages.yml` | Bauen und Veröffentlichen auf GitHub Pages |
+| `content/` | `site.json` mit Formaten und Rubriken, `autoren.json`, `ausgaben.json`, `beitraege/*.json` |
+| `public/` | Logos aus dem Logopaket, Icons, PDFs der Beiträge |
+| `src/lib/` | Datenzugriff (`daten.ts`), Zitate und Links (`hilfen.ts`), Typen |
+| `src/components/` | Bausteine aus dem Handbuch, etwa PublicationCard, ArtikelKopf, Zitiervorschlag, ThemenFilter |
+| `src/pages/` | alle Seiten, dazu `zitat.bib`, `zitat.ris`, Sitemap und Manifest |
+| `pocketbase/` | Schema der Sammlungen und Anleitung |
+| `design-system/` | das CI-Handbuch mit Tokens und Komponentenbeschreibungen |
+| `site/` | gebaute Fassung für GitHub Pages |
 
-Aus jedem Beitrag entstehen Artikelseite, Metadaten für Google Scholar, ein Block nach Schema.org, der Zitiervorschlag nach APA 7 sowie `zitat.bib` und `zitat.ris`. So stimmen alle Angaben immer überein.
+## Arbeiten
 
-## Lokal bauen und ansehen
-
-```sh
-python3 build.py && python3 -m http.server -d dist 8000
-```
-
-Danach ist die Seite unter `http://localhost:8000` erreichbar. Für eine Seite in einem Unterordner gibt es die Optionen `--base` und `--url`.
-
-```sh
-python3 build.py --base /nun/ --url https://cansi798.github.io
-```
-
-Die Tests laufen mit diesem Befehl.
-
-```sh
-python3 -m unittest discover -s tests -v
-```
-
-## Neuen Beitrag anlegen
-
-1. Das PDF nach `static/pdf/<slug>.pdf` legen.
-2. Eine Datei `content/beitraege/<slug>.json` anlegen. Am einfachsten kopieren Sie einen vorhandenen Beitrag und passen ihn an.
-3. `python3 build.py` ausführen. Der Generator meldet fehlende Pflichtfelder, unbekannte Rubriken, Formate, Autoren oder Ausgaben und bricht dann ab.
-
-| Feld | Bedeutung |
-| --- | --- |
-| `slug` | Adresse des Beitrags, nur a bis z, Ziffern und Bindestrich |
-| `format` | artikel, abschlussarbeit, kurzbeitrag, uebersetzung, arbeitspapier, rezension, buch oder podcast |
-| `rubrik` | Slug einer Rubrik aus `content/site.json`, etwa `fiqh` |
-| `titel`, `untertitel` | Text |
-| `autoren` | Liste von Slugs aus `content/autoren.json` |
-| `ausgabe`, `seiten` | ID aus `content/ausgaben.json` und erste und letzte Seite, leer bei laufenden Formaten |
-| `datum` | Erscheinungsdatum als JJJJ-MM-TT |
-| `doi` | etwa `10.5281/zenodo.0000000`, leer solange noch keine DOI vergeben ist |
-| `abstract_de`, `abstract_en` | Text |
-| `schlagworte` | bis zu fünf |
-| `pdf` | Pfad unter `static/`, etwa `pdf/<slug>.pdf` |
-| `version`, `versionen` | Nummer und Liste früherer Fassungen mit Datum und Hinweis |
-| `inhalt` | optionale Textblöcke vom Typ absatz, h2, h3, liste, nummern, zitat oder aaya |
-
-Pflicht sind `slug`, `format`, `rubrik`, `titel`, `autoren`, `datum`, `abstract_de` und `schlagworte`. Die Lizenz CC BY 4.0 gilt für alle Beiträge und steht in `content/site.json`.
-
-## Design-Tokens
-
-Farben, Abstände und Schriften stehen in `design-system/tokens.json`. Daraus erzeugt `build.py` bei jedem Lauf die Datei `css/tokens.css`. Sie wird nicht von Hand geändert. `static/css/site.css` nutzt nur die Variablen daraus und keine festen Farbwerte. Ein Test prüft das.
-
-## Veröffentlichung
-
-Die Seite liegt unter https://cansi798.github.io/nun/site/ und wird aus dem Ordner `site/` im Zweig `main` ausgeliefert (Pages im Modus Deploy from branch). Vor jedem Push wird sie deshalb neu gebaut.
+Benötigt wird Node 20 oder neuer.
 
 ```
-python3 build.py --base /nun/site/ --url https://cansi798.github.io --out site
-git add -A && git commit && git push
+npm install
+npm run dev          # Vorschau unter http://localhost:4321
+npm run build        # baut nach dist/
+npm test             # prüft dist/ (Seiten, Links, Metadaten, Tokens, Alternativtexte)
 ```
 
-Jeder Push startet außerdem den Workflow in `.github/workflows/pages.yml`, der die Tests ausführt. Für saubere Adressen ohne `site/` stellt man einmalig unter Settings, Pages, Source auf "GitHub Actions" um und entfernt im Workflow die Zeile `if` beim Schritt deploy. Danach baut und veröffentlicht der Workflow `dist/` selbst, und der Ordner `site/` kann entfallen.
+### Neuer Beitrag
+
+1. PDF nach `public/pdf/<slug>.pdf` legen.
+2. Datei `content/beitraege/<slug>.json` anlegen. Am einfachsten über das Formular unter `/intern/`, das die Datei erzeugt.
+3. Pflichtfelder sind slug, format, rubrik, titel, autoren, datum und abstract_de. Format und Rubrik müssen in `content/site.json` stehen. Höchstens fünf Schlagworte.
+4. `npm run build`. Fehlerhafte Angaben brechen den Bau mit einer klaren Meldung ab.
+
+## Veröffentlichen
+
+**Eigener Server.** `NUN_SITE=https://nun.example.org npm run build` und den Ordner `dist/` hochladen. Unter einem Unterpfad zusätzlich `NUN_BASE=/pfad/` setzen.
+
+**GitHub Pages (Vorschau).** Pages steht auf Deploy from branch. `./scripts/pages.sh` baut nach `site/`, danach committen und pushen. Jeder Push startet außerdem den Workflow in `.github/workflows/pages.yml`, der baut und testet.
 
 ## Offene Punkte
 
-- ISSN bei der Deutschen Nationalbibliothek beantragen und in `content/site.json` eintragen.
-- DOIs über Zenodo vergeben und in die Beiträge eintragen.
-- Impressum und Datenschutz ausfüllen und rechtlich prüfen lassen.
-- Echte Autorendaten mit Abschlussjahr, Bio und ORCID-iD ergänzen.
-- Der Upload-Bereich unter `intern/` arbeitet nur im Browser. Für echtes Hochladen braucht er später ein Backend.
+- ISSN bei der Deutschen Nationalbibliothek beantragen und in `content/site.json` eintragen
+- DOIs über Zenodo vergeben und in die Beiträge eintragen
+- Impressum und Datenschutz ausfüllen und prüfen lassen
+- Autorenseite mit Abschlussjahr, Bachelorarbeit und ORCID ergänzen
+- PocketBase-Server einrichten und Inhalte mit `npm run pb:import` übertragen
