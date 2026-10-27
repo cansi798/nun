@@ -6,6 +6,10 @@ import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { ladeDaten } from "../lib/daten";
 import { absolut, link } from "../lib/hilfen";
+// Die drei Schnitte, die jede Seite oberhalb der Falz braucht, früh laden
+import fontTitel from "../assets/fonts/cormorant-garamond-latin-500.woff2?url";
+import fontText from "../assets/fonts/source-serif-4-latin-400.woff2?url";
+import fontUi from "../assets/fonts/inter-latin-500.woff2?url";
 
 interface Props { titel?: string; beschreibung?: string; aktiv?: string; noindex?: boolean; typ?: "website" | "article"; datum?: string }
 const { titel = "", beschreibung, aktiv = "", noindex = false, typ = "website", datum } = Astro.props;
@@ -22,6 +26,7 @@ const kanonisch = absolut(Astro.url.pathname.replace(import.meta.env.BASE_URL, "
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{voll}</title>
+{[fontTitel, fontText, fontUi].map((f) => <link rel="preload" href={f} as="font" type="font/woff2" crossorigin />)}
 <meta name="description" content={text}>
 {noindex && <meta name="robots" content="noindex">}
 {!noindex && <link rel="canonical" href={kanonisch}>}
