@@ -8,18 +8,18 @@ const d = await ladeDaten();
 ---
 <Basis titel="Über uns" aktiv="ueber-uns/">
   <div class="seite">
-    <Seitenkopf titel="Über uns" einleitung="NUN ist eine Plattform der Absolventinnen und Absolventen des Islamologischen Instituts." />
+    <Seitenkopf titel="Über uns" einleitung={d.site.idee} />
+    <div class="logo-buehne">
+      <img class="nur-hell" src={link("logo/logo.svg")} alt="NUN, Damit wir einander kennen" width="673" height="891" loading="lazy">
+      <img class="nur-dunkel" src={link("logo/logo-hell.svg")} alt="NUN, Damit wir einander kennen" width="673" height="891" loading="lazy">
+    </div>
     <div class="schmal fliesstext">
       <p>Auf NUN veröffentlichen Absolventinnen und Absolventen des Bachelorstudiums Islam-Wissenschaft am Islamologischen Institut, in Kooperation mit der Faculty of Islamic Studies der International University of Novi Pazar. Sie schreiben Fachartikel, Abschlussarbeiten, Übersetzungen und Bücher zu allen Fächern ihres Studiums.</p>
       <p>Alle Beiträge sind frei zugänglich, ohne Anmeldung, ohne Bezahlschranke und ohne Gebühren für die Autorinnen und Autoren. Dieses Modell heißt Diamond Open Access. Mehr dazu steht auf der Seite <a href={link("open-access/")}>Open Access</a>.</p>
       <AayaZitat arabisch="وَجَعَلْنَاكُمْ شُعُوبًا وَقَبَائِلَ لِتَعَارَفُوا" uebersetzung={d.site.leitsatz} quelle="Leitsatz nach Suura al-Hudschuraat 49:13" />
       <p>Der Leitsatz greift das Wort li-ta'aarafuu aus Suura al-Hudschuraat auf. Kennenlernen durch Wissen ist der Kern von NUN.</p>
       <h2 class="t-h2">Das Zeichen</h2>
-      <div class="zeichen">
-        <img class="nur-hell" src={link("logo/emblem.svg")} alt="" width="120" height="120" loading="lazy">
-        <img class="nur-dunkel" src={link("logo/emblem-hell.svg")} alt="" width="120" height="120" loading="lazy">
-        <p>Das Signet ist ein Kreis aus 23 Punkten, der oben offen ist, mit einem goldenen Punkt in der Mitte. Die Form erinnert an den Buchstaben Nuun, eine offene Schale mit einem Punkt. Zugleich steht sie für eine Gemeinschaft um einen gemeinsamen Kern.</p>
-      </div>
+      <p>Das Signet ist ein Kreis aus 23 Punkten, der oben offen ist, mit einem goldenen Punkt in der Mitte. Die Form erinnert an den Buchstaben Nuun, eine offene Schale mit einem Punkt. Zugleich steht sie für eine Gemeinschaft um einen gemeinsamen Kern.</p>
       <h2 class="t-h2" id="kontakt">Kontakt</h2>
       <p>Sie erreichen die Redaktion per E-Mail an <a href={`mailto:${d.site.kontakt}`}>{d.site.kontakt}</a>.</p>
     </div>

@@ -32,10 +32,10 @@ const saeulen = [
         <a class="knopf primaer" href={link("publikationen/")}>Beiträge entdecken</a>
         <a class="knopf sekundaer" href={link("ausgaben/")}>Aktuelles Heft ansehen</a>
       </div>
-      <p class="t-slogan leitsatz">{d.site.leitsatz}</p>
     </div>
-    <div class="hero-flaeche" aria-hidden="true">
-      <img src={link("logo/emblem-hell.svg")} alt="" width="440" height="440" fetchpriority="high">
+    <div class="hero-flaeche">
+      <!-- Hauptlogo nach Handbuch (01_Logo, Fassung transparent_hell auf Nachtblau) -->
+      <img class="hero-logo" src={link("logo/logo-hell.svg")} alt="NUN, Damit wir einander kennen" width="673" height="891" fetchpriority="high">
     </div>
   </section>
 
@@ -74,8 +74,8 @@ const saeulen = [
     <section class="heft-band" id="ausgaben" aria-labelledby="heft">
       <div class="heft-band-in">
         <div class="heft-titel gross" aria-hidden="true">
-          <img src={link("logo/emblem-hell.svg")} alt="" width="150" height="150" loading="lazy">
-          <b>NUN</b><span>Jahrgang {heft.jahrgang} · Heft {heft.heft}</span>
+          <img src={link("logo/logo-ohne-leitsatz-hell.svg")} alt="" width="747" height="875" loading="lazy">
+          <span>Jahrgang {heft.jahrgang} · Heft {heft.heft}</span>
         </div>
         <div class="heft-text">
           <div class="meta">Aktuelles Heft · {heft.jahreszeit} {heft.jahr}</div>

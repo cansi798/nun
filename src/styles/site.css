@@ -164,9 +164,11 @@ body.menue-offen { overflow: hidden; }
 .hero-text .goldlinie { margin: 0; }
 .hero-text .t-lead { max-width: 560px; }
 .leitsatz { color: var(--grau-leitsatz); font-size: 24px; line-height: 32px; }
-.hero-flaeche { display: none; background: var(--nachtblau); align-items: center; justify-content: center; min-height: 220px; padding: var(--space-5); overflow: hidden; }
-[data-theme="dark"] .hero-flaeche { background: var(--nachtblau-700); }
-.hero-flaeche img { width: 160px; }
+.hero-flaeche { display: flex; background: var(--nachtblau); align-items: center; justify-content: center; min-height: 220px; padding: var(--space-5); overflow: hidden; }
+[data-theme="dark"] .hero-flaeche { background: var(--nachtblau); border-bottom: 1px solid var(--linie); }
+.hero-logo { width: 150px; max-width: 60%; }
+/* Auf Telefon und Tablet steht das Hauptlogo zuerst, auf dem Desktop rechts wie im Mockup */
+.hero-flaeche { order: -1; min-height: 0; padding: var(--space-5) var(--space-3); }
 
 /* ---------- Karten ---------- */
 .raster { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
@@ -210,13 +212,11 @@ body.menue-offen { overflow: hidden; }
 .heft-band .punktliste li { font-size: 17px; line-height: 26px; }
 .heft-band .punktliste li::before { margin-top: 10px; }
 .heft-titel { flex: 0 0 auto; width: 168px; height: 224px; background: var(--nachtblau); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); color: var(--ink-invers); }
-.heft-titel img { width: 110px; }
-.heft-titel b { font: 500 26px/1 var(--font-display); letter-spacing: .18em; }
+.heft-titel img { width: 108px; }
 .heft-titel span { font: 500 11px/16px var(--font-ui); letter-spacing: .12em; text-transform: uppercase; }
 .heft-titel.gross { width: 120px; height: 160px; background: var(--nachtblau-700); gap: 8px; }
 [data-theme="dark"] .heft-titel.gross { background: var(--nachtblau); }
-.heft-titel.gross img { width: 76px; }
-.heft-titel.gross b { font-size: 22px; }
+.heft-titel.gross img { width: 84px; }
 .heft-titel.gross span { font-size: 9px; letter-spacing: .08em; white-space: nowrap; }
 
 /* ---------- Themen-Gitter ---------- */
@@ -334,6 +334,8 @@ body.menue-offen { overflow: hidden; }
 .tabelle-dl dt { font: 500 14px/22px var(--font-ui); color: var(--ink); }
 .tabelle-dl dd { font: 400 16px/26px var(--font-text); }
 
+.logo-buehne { display: flex; justify-content: center; padding: var(--space-5) 0 var(--space-6); max-width: var(--breite-text); }
+.logo-buehne img { width: 200px; }
 .zeichen { display: grid; gap: var(--space-3); align-items: start; margin-bottom: var(--space-4); }
 .zeichen img { width: 96px; }
 
@@ -386,15 +388,14 @@ body.menue-offen { overflow: hidden; }
   .form-karte { padding: var(--space-4); }
   .thema-name { font-size: 24px; line-height: 32px; }
   .hero-text { padding: var(--space-7) var(--space-4); }
-  .hero-flaeche { display: flex; min-height: 280px; padding: var(--space-5); align-items: center; justify-content: center; overflow: hidden; }
-  .hero-flaeche img { width: 200px; }
+  .hero-flaeche { padding: var(--space-6); }
+  .hero-logo { width: 180px; }
   .nur-breit { display: inline-flex !important; }
   .nur-schmal { display: none !important; }
   .nur-tablet { display: flex !important; }
   .thema-zelle { padding: var(--space-4) var(--space-4) var(--space-4) 0; }
   .heft-titel.gross { width: 180px; height: 240px; gap: 12px; }
-  .heft-titel.gross img { width: 120px; }
-  .heft-titel.gross b { font-size: 30px; }
+  .heft-titel.gross img { width: 126px; }
   .heft-titel.gross span { font-size: 11px; letter-spacing: .12em; }
   .karte-abstract { -webkit-line-clamp: 4; }
   .karte { padding: var(--space-4); gap: var(--space-2); }
@@ -454,11 +455,11 @@ body.menue-offen { overflow: hidden; }
   .thema-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
   /* Hero geteilt wie im Mockup */
+  .hero-flaeche { order: 0; }
   .hero { flex-direction: row; max-width: var(--breite-seite); margin: 0 auto; padding: 0 var(--space-5); align-items: stretch; }
   .hero-text { flex: 1 1 560px; min-width: 0; padding: 88px 56px 88px 0; gap: var(--space-4); }
-  /* Der Punktkreis als großes, angeschnittenes Motiv (Handbuch, Gestaltungselemente) */
-  .hero-flaeche { flex: 0 1 440px; min-height: 420px; position: relative; padding: 0; }
-  .hero-flaeche img { position: absolute; width: 125%; max-width: none; right: -30%; bottom: -24%; }
+  .hero-flaeche { flex: 0 1 440px; min-height: 420px; padding: var(--space-6); border-bottom: 0; }
+  .hero-logo { width: 62%; max-width: 280px; }
   .leitsatz { margin-top: var(--space-2); }
 
   .raster { grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
@@ -469,8 +470,7 @@ body.menue-offen { overflow: hidden; }
   .heft-band { margin-top: var(--space-8); }
   .heft-band-in { padding: 96px var(--space-5); gap: 64px; }
   .heft-titel.gross { width: 240px; height: 320px; }
-  .heft-titel.gross img { width: 150px; }
-  .heft-titel.gross b { font-size: 34px; }
+  .heft-titel.gross img { width: 164px; }
   .panels { grid-template-columns: 1.4fr 1fr; gap: var(--space-5); }
   .panel { padding: 40px; }
   .saeulen { grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
