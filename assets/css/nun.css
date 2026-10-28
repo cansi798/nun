@@ -1,0 +1,231 @@
+/* NUN · Gestaltungssystem der Webseite
+   Farben und Maße aus dem Markenkern. Textschrift Georgia, Beschriftung Archivo, Arabisch Traditional Arabic. */
+@font-face{font-family:"Archivo";src:url("../fonts/Archivo-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Archivo";src:url("../fonts/Archivo-Bold.ttf") format("truetype");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Archivo";src:url("../fonts/Archivo-Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:swap}
+
+:root{
+  --navy:#1F2E4D; --gold:#AD7E2A; --creme:#F5EFE2; --ink:#1B2228; --grau:#6E7682; --hell:#B7C0CC; --linie:#D9D0BE; --weiss:#FFFFFF;
+  --papier:#FBF9F4; --navy-dunkel:#162238;
+  --serif:Georgia,"Times New Roman",Times,serif;
+  --sans:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --arab:"Traditional Arabic","Amiri","Scheherazade New",serif;
+  --lesebreite:42rem; --seite:76rem; --rand:clamp(1rem,4vw,3rem);
+}
+*{box-sizing:border-box}
+html{font-size:18px;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--serif);color:var(--ink);background:var(--weiss);line-height:1.6}
+img,svg{max-width:100%;height:auto;display:block}
+a{color:var(--navy);text-decoration:none;border-bottom:1px solid var(--hell);transition:border-color .15s}
+a:hover{border-color:var(--gold)}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:700;color:var(--navy);line-height:1.15;margin:0 0 .5em}
+h1{font-size:clamp(2rem,4.4vw,3.4rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,2.6vw,2.1rem)}
+h3{font-size:1.25rem}
+p{margin:0 0 1em}
+.sans{font-family:var(--sans)}
+.skip{position:absolute;left:-999px;top:0;background:var(--gold);color:var(--weiss);padding:.5rem 1rem;z-index:100}
+.skip:focus{left:1rem}
+.wrap{max-width:var(--seite);margin:0 auto;padding:0 var(--rand)}
+.lesen{max-width:var(--lesebreite);margin:0 auto}
+.rubrik{font-family:var(--sans);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.meta{font-family:var(--sans);font-size:.8rem;color:var(--grau)}
+.meta b{color:var(--navy);font-weight:700}
+.knopf{display:inline-block;white-space:nowrap;font-family:var(--sans);font-size:.85rem;font-weight:700;letter-spacing:.02em;padding:.8rem 1.4rem;border-radius:3px;border:1px solid var(--navy);color:var(--navy);background:transparent}
+.knopf.voll{background:var(--navy);color:var(--weiss)}
+.knopf.gold{background:var(--gold);border-color:var(--gold);color:var(--weiss)}
+.knopf.hell{border-color:var(--creme);color:var(--creme)}
+.knopf.hell.voll{background:var(--creme);color:var(--navy)}
+.goldlinie{width:3rem;height:2px;background:var(--gold);border:0;margin:1.2rem 0}
+.goldlinie.mitte{margin-left:auto;margin-right:auto}
+
+/* Kopf */
+.kopf{border-bottom:1px solid var(--linie);background:var(--weiss);position:sticky;top:0;z-index:50}
+.kopf .wrap{display:flex;align-items:center;justify-content:space-between;gap:2rem;height:4.6rem}
+.kopf .logo{border:0;display:flex;align-items:center}
+.kopf .logo img{height:2.6rem;width:auto}
+.nav{display:flex;gap:1.35rem;align-items:center;font-family:var(--sans);font-size:.84rem;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.nav a{border:0;padding:.3rem 0;position:relative;color:var(--navy)}
+.nav a.aktiv::after,.nav a:hover::after{content:"";position:absolute;left:0;right:0;bottom:-.2rem;height:2px;background:var(--gold)}
+.kopf .werkzeuge{display:flex;gap:1rem;align-items:center}
+.suche{display:flex;align-items:center;gap:.4rem;border:1px solid var(--linie);border-radius:3px;padding:.4rem .7rem;font-family:var(--sans);font-size:.8rem;color:var(--grau);min-width:10.5rem}
+.suche span{flex:1}
+.menueknopf{display:none}
+
+/* Held */
+.held{background:var(--navy);color:var(--creme);padding:4.5rem 0 4rem}
+.held .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:4rem;align-items:center}
+.held h1{color:var(--creme);font-weight:400;font-size:clamp(2.2rem,4.6vw,3.6rem)}
+.held h1 em{font-style:italic;color:var(--weiss)}
+.held p{font-size:1.1rem;color:var(--hell);max-width:34rem}
+.held .knoepfe{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.6rem}
+.held .marke{display:flex;justify-content:center}
+.held .marke img{width:min(22rem,100%)}
+.leitsatz{font-style:italic;color:var(--gold);font-size:1.05rem}
+
+/* Leisten */
+.leiste{border-bottom:1px solid var(--linie);background:var(--papier)}
+.leiste .wrap{display:flex;gap:2rem;align-items:center;height:3.2rem;font-family:var(--sans);font-size:.8rem;color:var(--grau);overflow:auto}
+.leiste a{border:0;white-space:nowrap}
+.leiste a b{color:var(--navy)}
+
+/* Abschnitte */
+.abschnitt{padding:4rem 0}
+.abschnitt.creme{background:var(--creme)}
+.abschnitt.navy{background:var(--navy);color:var(--creme)}
+.abschnitt.navy h2,.abschnitt.navy h3{color:var(--creme)}
+.abschnitt.navy p{color:var(--hell)}
+.abschnitt.navy a{color:var(--creme);border-color:var(--gold)}
+.kopfzeile{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;margin-bottom:2rem;border-bottom:1px solid var(--linie);padding-bottom:1rem}
+.kopfzeile h2{margin:0}
+.kopfzeile a{font-family:var(--sans);font-size:.85rem;font-weight:700;border:0;white-space:nowrap}
+.navy .kopfzeile{border-color:rgba(245,239,226,.2)}
+
+/* Raster und Karten */
+.raster{display:grid;gap:2rem}
+.r2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.r3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.r4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.karte{display:flex;flex-direction:column;gap:.5rem}
+.karte h3{margin:.2rem 0 .3rem;font-size:1.3rem}
+.karte h3 a{border:0}
+.karte p{color:var(--grau);font-size:.95rem;margin:0}
+.karte .meta{margin-top:auto;padding-top:.6rem}
+.karte.gross h3{font-size:1.9rem}
+.karte.gross p{font-size:1.05rem;color:var(--ink)}
+.bild{background:var(--creme);aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-radius:2px;overflow:hidden}
+.bild.hoch{aspect-ratio:3/4}
+.bild.quadrat{aspect-ratio:1}
+.bild.navy{background:var(--navy)}
+.bild img{width:40%;opacity:.9}
+.bild .platz{font-family:var(--sans);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grau)}
+.liste{list-style:none;margin:0;padding:0}
+.liste li{padding:1.1rem 0;border-bottom:1px solid var(--linie);display:grid;grid-template-columns:7rem 1fr auto;gap:1.5rem;align-items:baseline}
+.liste li:last-child{border:0}
+.liste .titel{font-size:1.15rem;font-weight:700;color:var(--navy)}
+.liste .titel a{border:0}
+.liste .text{color:var(--grau);font-size:.95rem;margin-top:.2rem}
+
+/* Band und Heftaufbau */
+.band{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:4rem;align-items:center}
+.umschlag{background:var(--navy);aspect-ratio:170/240;border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem;color:var(--creme);box-shadow:0 30px 60px -30px rgba(31,46,77,.6)}
+.umschlag img{width:55%}
+.umschlag .reihe{font-family:var(--sans);font-size:.62rem;letter-spacing:.22em;color:var(--gold);margin-top:2rem}
+.umschlag .bandtitel{font-size:1.5rem;margin:.6rem 0 0;color:var(--creme);text-align:center;font-weight:400}
+.umschlag .hg{font-family:var(--sans);font-size:.62rem;color:var(--hell);margin-top:auto}
+.tabelle{width:100%;border-collapse:collapse;font-size:.95rem}
+.tabelle th{font-family:var(--sans);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);text-align:left;padding:.6rem 0;border-bottom:1px solid var(--linie);font-weight:700}
+.tabelle td{padding:.7rem 0;border-bottom:1px solid var(--linie);vertical-align:top}
+.tabelle td:first-child{font-family:var(--sans);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);width:11rem;padding-top:.9rem}
+.tabelle td:last-child{text-align:right;color:var(--grau);font-family:var(--sans);font-size:.8rem;white-space:nowrap}
+
+/* Beitrag */
+.beitrag-kopf{padding:3.5rem 0 2rem}
+.beitrag-kopf h1{font-size:clamp(2rem,4vw,3rem)}
+.beitrag-kopf .unter{font-size:1.3rem;font-style:italic;color:var(--grau);margin:.4rem 0 1.4rem}
+.beitrag-kopf .autor{font-family:var(--sans);font-size:.9rem;color:var(--navy);font-weight:700}
+.vorspann{font-size:1.2rem;color:var(--navy);line-height:1.5;margin-bottom:2rem}
+.text p{font-size:1.06rem;text-align:justify;hyphens:auto}
+.text h2{font-size:1.5rem;margin-top:2.4rem}
+.zitat{margin:2rem 0;padding:.2rem 0 .2rem 1.4rem;border-left:3px solid var(--gold);font-style:italic;color:var(--navy);font-size:1.15rem}
+.aayah{margin:2rem 0;background:var(--creme);padding:1.6rem 2rem;border-radius:2px}
+.aayah .arabisch{font-family:var(--arab);font-size:1.7rem;direction:rtl;text-align:right;line-height:2;color:var(--navy);margin:0 0 .6rem}
+.aayah .uebersetzung{font-weight:700;color:var(--navy);text-align:justify;margin:0}
+.aayah .stelle{font-family:var(--sans);font-size:.8rem;color:var(--grau);margin-top:.6rem}
+.fussnoten{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linie);font-size:.85rem;color:var(--grau)}
+.fussnoten ol{padding-left:1.2rem;margin:0}
+.fussnoten li{margin-bottom:.4rem}
+sup{font-family:var(--sans);font-size:.65em;color:var(--gold)}
+.zitieren{margin:2.5rem 0;border:1px solid var(--linie);border-radius:3px;padding:1.2rem 1.5rem;font-family:var(--sans);font-size:.85rem;color:var(--grau);background:var(--papier)}
+.zitieren b{color:var(--navy);display:block;margin-bottom:.4rem;letter-spacing:.14em;text-transform:uppercase;font-size:.7rem}
+.zitieren code{font-family:var(--sans);color:var(--ink)}
+.werkzeug{display:flex;gap:.8rem;flex-wrap:wrap;margin:1.5rem 0}
+.werkzeug a{font-family:var(--sans);font-size:.78rem;font-weight:700;border:1px solid var(--linie);border-radius:3px;padding:.45rem .8rem}
+.beitrag-raster{display:grid;grid-template-columns:minmax(0,1fr) 16rem;gap:4rem;align-items:start}
+.seitenleiste{position:sticky;top:6rem;font-family:var(--sans);font-size:.82rem;color:var(--grau)}
+.seitenleiste h4{font-family:var(--sans);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:1.6rem 0 .6rem}
+.seitenleiste ul{list-style:none;margin:0;padding:0}
+.seitenleiste li{padding:.3rem 0;border-bottom:1px solid var(--linie)}
+.seitenleiste a{border:0}
+.autorkasten{display:flex;gap:1.2rem;align-items:center;margin:2.5rem 0;padding:1.4rem;background:var(--creme);border-radius:3px}
+.autorkasten .rund{width:4.5rem;height:4.5rem;border-radius:50%;background:var(--navy);flex:none;display:flex;align-items:center;justify-content:center}
+.autorkasten .rund img{width:60%}
+.autorkasten p{margin:0;font-size:.95rem;color:var(--grau)}
+.autorkasten b{color:var(--navy)}
+
+/* Filter */
+.filter{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.5rem 0 2.5rem}
+.filter a{font-family:var(--sans);font-size:.8rem;font-weight:700;border:1px solid var(--linie);border-radius:999px;padding:.45rem 1rem;color:var(--navy)}
+.filter a.aktiv{background:var(--navy);color:var(--weiss);border-color:var(--navy)}
+
+/* Personen */
+.person{display:flex;gap:1.2rem;align-items:flex-start}
+.person .rund{width:4rem;height:4rem;border-radius:50%;background:var(--creme);flex:none;display:flex;align-items:center;justify-content:center}
+.person .rund img{width:60%}
+.person h3{margin:0 0 .2rem;font-size:1.1rem}
+.person p{font-size:.9rem;color:var(--grau);margin:0}
+
+/* Programm */
+.programm{list-style:none;margin:0;padding:0}
+.programm li{display:grid;grid-template-columns:7rem 1fr;gap:2rem;padding:1rem 0;border-bottom:1px solid var(--linie)}
+.programm .zeit{font-family:var(--sans);font-size:.85rem;color:var(--gold);font-weight:700;padding-top:.2rem}
+.programm .was b{color:var(--navy);font-size:1.05rem}
+.programm .was p{margin:.2rem 0 0;color:var(--grau);font-size:.92rem}
+
+/* Zahlen und Versprechen */
+.versprechen{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3rem}
+.versprechen h3{font-size:1.15rem;margin-bottom:.4rem}
+.versprechen p{font-size:.95rem;color:var(--grau);margin:0}
+.versprechen .nr{font-family:var(--sans);color:var(--gold);font-size:.8rem;letter-spacing:.18em;margin-bottom:.6rem;font-weight:700}
+
+/* Formular */
+.formular{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem}
+.formular label{font-family:var(--sans);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grau);display:block;margin-bottom:.35rem}
+.formular .feld{border:1px solid var(--linie);border-radius:3px;padding:.75rem .9rem;font-family:var(--sans);font-size:.9rem;color:var(--grau);background:var(--weiss)}
+.formular .breit{grid-column:1/-1}
+.preis{border:1px solid var(--linie);border-radius:3px;padding:1.8rem;display:flex;flex-direction:column;gap:.5rem}
+.preis.empfohlen{border-color:var(--gold);box-shadow:0 20px 40px -30px rgba(31,46,77,.5)}
+.preis .betrag{font-size:2.2rem;color:var(--navy);font-weight:700}
+.preis .betrag small{font-size:.9rem;color:var(--grau);font-weight:400;font-family:var(--sans)}
+.preis p{color:var(--grau);font-size:.95rem;margin:0}
+.preis .knopf{margin-top:auto;text-align:center}
+
+/* Glossar */
+.glossar dt{font-weight:700;color:var(--navy);font-size:1.1rem;margin-top:1.4rem}
+.glossar dt span{font-family:var(--arab);font-size:1.4rem;color:var(--grau);margin-left:.8rem;font-weight:400}
+.glossar dd{margin:.2rem 0 0;color:var(--ink)}
+.alphabet{display:flex;flex-wrap:wrap;gap:.3rem;font-family:var(--sans);font-size:.8rem;margin:1.5rem 0}
+.alphabet a{border:1px solid var(--linie);border-radius:3px;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* Newsletter und Fuß */
+.rundbrief{background:var(--creme);padding:3.5rem 0}
+.rundbrief .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:3rem;align-items:center}
+.rundbrief form{display:flex;gap:.6rem}
+.rundbrief .feld{flex:1;border:1px solid var(--linie);border-radius:3px;padding:.8rem 1rem;font-family:var(--sans);font-size:.9rem;color:var(--grau);background:var(--weiss)}
+.fuss{background:var(--navy);color:var(--hell);padding:4rem 0 2rem;font-family:var(--sans);font-size:.85rem}
+.fuss .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:3rem}
+.fuss h4{font-family:var(--sans);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 1rem}
+.fuss ul{list-style:none;margin:0;padding:0}
+.fuss li{margin-bottom:.55rem}
+.fuss a{color:var(--creme);border:0}
+.fuss .marke img{width:13rem;margin-bottom:1.2rem}
+.fuss .unten{max-width:var(--seite);margin:3rem auto 0;padding:1.5rem var(--rand) 0;border-top:1px solid rgba(245,239,226,.15);display:flex;justify-content:space-between;gap:2rem;font-size:.78rem;color:var(--hell)}
+
+/* Mobil */
+@media (max-width:900px){
+  html{font-size:17px}
+  .nav,.suche{display:none}
+  .menueknopf{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--sans);font-size:.85rem;font-weight:700;color:var(--navy);border:1px solid var(--linie);border-radius:3px;padding:.5rem .8rem}
+  .held .wrap,.band,.rundbrief .wrap,.beitrag-raster{grid-template-columns:1fr}
+  .held .marke{order:-1}
+  .held .marke img{width:12rem}
+  .r2,.r3,.r4,.versprechen,.formular{grid-template-columns:1fr}
+  .fuss .wrap{grid-template-columns:1fr 1fr}
+  .liste li{grid-template-columns:1fr}
+  .seitenleiste{position:static}
+  .text p{text-align:left;hyphens:auto}
+  .kopf .wrap{gap:.8rem}
+  .kopf .knopf{padding:.55rem .8rem;font-size:.78rem}
+  .leiste .wrap{height:auto;flex-direction:column;align-items:flex-start;gap:.5rem;padding-top:.7rem;padding-bottom:.7rem;overflow:visible}
+  .leiste a{white-space:normal}
+}

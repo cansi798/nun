@@ -1,6 +1,0 @@
-dist/
-node_modules/
-.astro/
-__pycache__/
-*.pyc
-# site/ ist die veröffentlichte Fassung für GitHub Pages (Deploy from branch) und wird eingecheckt

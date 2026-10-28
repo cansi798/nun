@@ -1,4 +1,4 @@
-name: Website prüfen und bauen
+name: Website veröffentlichen
 
 on:
   push:
@@ -12,58 +12,19 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - name: Bauen
-        env:
-          NUN_BASE: /nun/
-          NUN_SITE: https://cansi798.github.io
-        run: npm run build
-      - name: Tests
-        env:
-          NUN_BASE: /nun/
-        run: npm test
-      # Solange Pages zusätzlich aus dem Zweig baut, bleibt auch die alte Adresse /nun/site/ erreichbar
-      - name: Alte Adresse /site/ mitnehmen
-        run: cp -r site dist/site
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  # Veröffentlicht dist/ unter https://cansi798.github.io/nun/, sobald in den Einstellungen
-  # Settings, Pages, Source auf "GitHub Actions" steht. Bis dahin schlägt der Schritt ohne
-  # Folgen fehl und site/ wird weiter über "Deploy from branch" ausgeliefert.
   deploy:
-    needs: build
-    continue-on-error: true
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      # Solange Pages zusätzlich aus dem Zweig baut, erst dessen Bau abwarten,
-      # damit diese Fassung zuletzt veröffentlicht wird und gewinnt
-      - name: Zweig-Bau abwarten
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          for i in $(seq 1 40); do
-            stand=$(gh api "repos/${{ github.repository }}/pages/builds/latest" --jq '.status + " " + .commit' 2>/dev/null || echo "unbekannt")
-            echo "$stand"
-            case "$stand" in
-              "built ${{ github.sha }}"|"errored ${{ github.sha }}") break ;;
-            esac
-            sleep 10
-          done
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
       - id: deployment
         uses: actions/deploy-pages@v4
